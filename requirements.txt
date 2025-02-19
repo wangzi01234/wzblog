@@ -1,0 +1,4 @@
+flask
+markdown
+pygments  # 代码高亮支持
+pyyaml

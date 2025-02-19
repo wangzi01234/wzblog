@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>最新文章</h1>
+<div class="post-list">
+    {% for post in posts %}
+    <article class="post-preview">
+        <h2><a href="{{ url_for('show_post', slug=post.slug) }}">{{ post.title }}</a></h2>
+        <div class="post-excerpt">
+            <time>{{ post.date }}</time>
+            <span class="tags">
+                {% for tag in post.tags %}
+                <a href="/tag/{{ tag }}">#{{ tag }}</a>
+                {% endfor %}
+            </span>
+        </div>
+        <div class="post-excerpt">
+            {{ post.excerpt }}
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% endblock %}

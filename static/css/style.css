@@ -28,13 +28,6 @@ nav a {
     text-decoration: none;
 }
 
-.post-preview {
-    margin: 2rem 0;
-    padding: 1.5rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
 
 pre {
     background: #f8f8f8;
@@ -78,24 +71,51 @@ footer {
     object-fit: cover;
 }
 
-/* 常规文章列表优化 */
+
+/* 文章预览布局 */
 .post-preview {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-    padding: 2rem;
-    margin: 1.5rem 0;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
 }
 
-.post-thumbnail {
-    width: 200px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 6px;
+.post-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
 }
 
-.post-stats {
+.post-content-excerpt {
     color: #666;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
     font-size: 0.9em;
-    margin: 0.5rem 0;
+    color: #888;
+}
+
+.post-date {
+    white-space: nowrap;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag-pill {
+    background: #f0f0f0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.tag-pill:hover {
+    background: #e0e0e0;
 }

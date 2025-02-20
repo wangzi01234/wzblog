@@ -29,13 +29,16 @@
     <article class="post-preview">
         <div class="post-info">
             <h2><a href="{{ url_for('show_post', slug=post.slug) }}">{{ post.title }}</a></h2>
-            <div class="post-stats">
-                <span class="word-count">{{ post.word_count }}字</span>
-                <span class="read-time">阅读约 {{ post.read_time }}分钟</span>
-            </div>
             <div class="post-excerpt">
                 {{ post.excerpt|truncate(150) }}
             </div>
+            <div class="post-meta">
+                <time class="post-date">{{ post.date }}</time>
+            </div>
+            <!-- <div class="post-stats">
+                <span class="word-count">{{ post.word_count }}字</span>
+                <span class="read-time">阅读约 {{ post.read_time }}分钟</span>
+            </div> -->
         </div>
         {% if post.cover %}
         <img src="{{ post.cover }}" class="post-thumbnail">

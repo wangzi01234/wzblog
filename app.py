@@ -68,6 +68,13 @@ def tech():
                          posts=posts,
                          category_name='技术杂谈',
                          category_desc='这里分享技术开发心得')
+@app.route('/lang')
+def lang():
+    posts = get_posts(category='lang')
+    return render_template('category.html', 
+                         posts=posts,
+                         category_name='语言学习',
+                         category_desc='这里分享语言学习心得')
 
 @app.route('/think')
 def think():

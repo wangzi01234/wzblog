@@ -1,0 +1,138 @@
+.plan-page{
+    display: grid;
+    margin: 20px;
+    /*  声明列的宽度  */
+    /* grid-template-columns: repeat(auto-fill, 1fr); */
+    grid-template-columns: repeat(auto-fill, 1fr);
+    grid-gap: 20px;
+}
+
+/* 统计图表区域 */
+.stats-section {
+  height: 300px;
+  margin: 20px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+/* 当日计划列表 */
+.plan-list {
+  list-style: none;
+  padding: 0;
+}
+
+.plan-item {
+  background: white;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.plan-item.completed {
+  opacity: 0.6;
+  background: #f0f0f0;
+}
+
+/* 日历样式 */
+.calendar {
+  /* background: #8cfff0; */
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin: 20px;
+}
+
+.calendar-day {
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.calendar-day:hover {
+  background: #e3f2fd;
+}
+
+/* 分类容器，默认纵向排列 */
+.category-container {
+  /* background: #ffaaaa; */
+  display: grid;
+  margin: 20px;
+  /*  声明列的宽度  */
+  /* grid-template-columns: repeat(auto-fill, 1fr); */
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+
+/* 分类盒子 */
+.category-box {
+  padding: 15px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 分类标题 */
+.category-title {
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid;
+}
+
+/* 分类颜色区分 */
+.category-work .category-title {
+   border-color: #ff6b6b; color: #ff6b6b; 
+  }
+.category-study .category-title {
+   border-color: #4ecdc4; color: #4ecdc4; 
+  }
+.category-life .category-title {
+   border-color: #45b7d1; color: #45b7d1; 
+  }
+.category-health .category-title {
+   border-color: #f30061; color: #f30061; 
+  }
+
+/* 计划行 */
+.plan-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* 已完成状态 */
+.plan-row.completed {
+  opacity: 0.7;
+}
+.plan-row.completed .plan-title {
+  text-decoration: line-through;
+  color: #999;
+}
+.plan-row.completed .plan-content {
+  color: #bbb;
+}
+
+/* 计划文本样式 */
+.plan-title {
+  font-weight: 500;
+  flex: 0 0 35%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.plan-content {
+  flex: 1;
+  color: #666;
+  padding-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 空状态提示 */
+.plan-empty {
+  color: #999;
+  font-style: italic;
+  padding: 8px 0;
+}

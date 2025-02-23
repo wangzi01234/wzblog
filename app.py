@@ -1,52 +1,25 @@
 ### **3. 修改 app.py 的解析逻辑**
 from flask import Flask, render_template, abort
-from markdown import markdown
-import os
-import yaml  # 需要安装 pyyaml
-from controller.minio import minio_client
+from controller.posts import get_posts
+from controller.plans import get_plans, get_stats
+from extensions import db
+from datetime import datetime
+from dotenv import load_dotenv
 
-app = Flask(__name__)
-app.config['CONTENT_DIR'] = 'csontent'
+load_dotenv()
 
-def parse_markdown(content):
-    """解析带 YAML Front Matter 的 Markdown 文件"""
-    parts = content.split('---\r\n', 2)
-    if len(parts) == 3:
-        metadata = yaml.safe_load(parts[1])
-        body = markdown(parts[2], extensions=['fenced_code', 'codehilite'])
-    else:
-        metadata = {}
-        body = markdown(content, extensions=['fenced_code', 'codehilite'])
-    return metadata, body
+def create_app():
+    app = Flask(__name__)
+    app.config['CONTENT_DIR'] = 'csontent'
+    app.config.from_prefixed_env()
+    # app.config.from_pyfile('config.py')
+    db.init_app(app)
+    return app
 
-def get_posts(category=None):
-    posts = []
-    prefix = f"{category}/" if category else ""
-    objects = minio_client.list_objects(prefix)
-
-    for obj in objects:
-        if obj.object_name.endswith('.md'):
-            content = minio_client.get_object(obj.object_name)
-        else:
-            continue
-        if not content:
-            continue
-        try:
-            metadata, content = parse_markdown(content)
-            slug = os.path.splitext(os.path.basename(obj.object_name))[0]
-            slug = slug.lower().replace(' ', '-')     
-            metadata.setdefault('category', category if category else '未分类')
-            metadata.setdefault('slug', slug)
-            posts.append({**metadata, 'content': content})
-        except Exception as e:
-            app.logger.error(f"解析文件失败: {obj.object_name}, 错误: {str(e)}")
-            continue
-    
-    # 安全排序：缺失日期的文章排最后
-    return sorted(posts, key=lambda x: x.get('date'), reverse=True)
+app = create_app()
 
 # ... 其他路由保持不变 ...
-
+from controller import posts, plans
 @app.route('/')
 def index():
     return render_template('index.html', posts=get_posts())
@@ -78,7 +51,11 @@ def think():
 
 @app.route('/plan')
 def plan():
-    return render_template('plan.html')
+    today = datetime.today().date()
+    return render_template('plan.html', 
+                         today_plans=get_plans(today),
+                         stats=get_stats(),
+                         current_date=today)
 
 @app.route('/book')
 def book():
@@ -87,6 +64,14 @@ def book():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+@app.route('/plans/<date>')
+def daily_plans(date):
+    target_date = datetime.strptime(date, '%Y-%m-%d').date()
+    return render_template('plan.html',
+                         today_plans=get_plans(target_date),
+                         stats=get_stats(),
+                         current_date=target_date)
 
 @app.errorhandler(404)
 def page_not_found(e):

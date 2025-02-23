@@ -1,1 +1,56 @@
 {% extends "base.html" %}
+
+{% block content %}
+<div class="plan-page">
+    <!-- 统计图表 -->
+    <div class="stats-section">
+        <canvas id="progressChart"></canvas>
+    </div>
+
+    <!-- 当日计划 -->
+    <div class="today-plan">
+        <h2>{{ current_date.strftime('%Y-%m-%d') }} 计划</h2>
+        <div class="category-container">
+            {% for category in ['work', 'study', 'life', 'health'] %}
+            <div class="category-box category-{{ category }}">
+                <h3 class="category-title">{{ category|capitalize }}</h3>
+                <div class="plan-items">
+                    {% for plan in today_plans if plan.category == category %}
+                    <div class="plan-row {{ 'completed' if plan.is_completed }}">
+                        <span class="plan-title">{{ plan.title }}</span>
+                        <span class="plan-content">{{ plan.content }}</span>
+                    </div>
+                    {% else %}
+                    <div class="plan-empty">暂无计划</div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 日历 -->
+    <!-- <div class="calendar" id="calendar"></div> -->
+</div>
+{% endblock %}
+
+<!-- <script src="{{ url_for('static', filename='js/calendar.js') }}"></script> -->
+<script>
+    // 初始化图表
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Work', 'Study', 'Life'],
+            datasets: [{
+                label: 'Completed',
+                data: [
+                    // {{ stats.work.completed }},
+                    // {{ stats.study.completed }},
+                    // {{ stats.life.completed }}
+                ],
+                backgroundColor: 'rgba(75, 192, 192, 0.6)'
+            }]
+        }
+    });
+</script>

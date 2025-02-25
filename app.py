@@ -1,7 +1,7 @@
 ### **3. 修改 app.py 的解析逻辑**
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, request
 from controller.posts import get_posts
-from controller.plans import get_plans, get_stats
+from controller.plans import get_plans, get_stats, get_calendar_data
 from extensions import db
 from datetime import datetime
 from dotenv import load_dotenv
@@ -19,7 +19,6 @@ def create_app():
 app = create_app()
 
 # ... 其他路由保持不变 ...
-from controller import posts, plans
 @app.route('/')
 def index():
     return render_template('index.html', posts=get_posts())
@@ -51,11 +50,37 @@ def think():
 
 @app.route('/plan')
 def plan():
-    today = datetime.today().date()
-    return render_template('plan.html', 
-                         today_plans=get_plans(today),
-                         stats=get_stats(),
-                         current_date=today)
+    # 获取参数
+    year = request.args.get('year', type=int, default=datetime.now().year)
+    month = request.args.get('month', type=int, default=datetime.now().month)
+    date_str = request.args.get('date', default=datetime.now().strftime('%Y-%m-%d'))
+    
+    # 处理月份溢出
+    if month > 12:
+        year += 1
+        month = 1
+    elif month < 1:
+        year -= 1
+        month = 12
+    
+    try:
+        current_date = datetime.strptime(date_str, '%Y-%m-%d')
+    except:
+        current_date = datetime.now()
+    
+    # 生成日历数据
+    calendar_data = get_calendar_data(year, month)
+    
+    # 获取当日计划
+    today_plans = get_plans(current_date)
+    
+    # 渲染模板
+    return render_template('plan.html',
+                         year=year,
+                         month=month,
+                         current_date=current_date,
+                         calendar=calendar_data,
+                         today_plans=today_plans)
 
 @app.route('/book')
 def book():
@@ -65,14 +90,19 @@ def book():
 def about():
     return render_template('about.html')
 
-@app.route('/plans/<date>')
+@app.route('/plan/<date>')
 def daily_plans(date):
     target_date = datetime.strptime(date, '%Y-%m-%d').date()
+    calendar_data = get_calendar_data(target_date.year, target_date.month)
     return render_template('plan.html',
                          today_plans=get_plans(target_date),
                          stats=get_stats(),
-                         current_date=target_date)
-
+                         current_date=target_date,
+                         calendar=calendar_data,
+                         year=target_date.year,
+                         month=target_date.month,
+                         day=target_date.day
+                         )
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404

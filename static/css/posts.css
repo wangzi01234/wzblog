@@ -17,6 +17,84 @@
     transform: translateY(-5px);
 }
 
+/* 通用标题链接样式 */
+.post-card h2 a,
+.post-preview h2 a {
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    display: inline-block;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 文字渐变效果 */
+.post-card h2 a {
+    background-image: linear-gradient(
+        to right,
+        #2c3e50 0%,
+        #3498db 50%,
+        #2c3e50 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 悬停动画 */
+.post-card h2 a:hover {
+    background-position: 100% center;
+    transform: translateY(-1px);
+}
+
+/* 常规列表标题特效 */
+.post-preview h2 a {
+    font-weight: 600;
+    color: #2d3436;
+    padding-bottom: 2px;
+}
+
+/* 动态下划线效果 */
+.post-preview h2 a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -3px;
+    left: 50%;
+    background: linear-gradient(45deg, #6c5ce7, #ff7675);
+    transition: all 0.3s ease;
+}
+
+.post-preview h2 a:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+/* 特色卡片标题布局优化 */
+.post-card h2 {
+    margin: 1rem 1.5rem 0;
+}
+
+.post-card h2 a {
+    font-size: 1.4rem;
+    line-height: 1.3;
+    display: block;
+    padding: 0.5rem 0;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .post-card h2 a {
+        font-size: 1.2rem;
+        background-size: 150% auto;
+    }
+    
+    .post-preview h2 a {
+        font-size: 1.1rem;
+    }
+}
+
 .post-cover {
     width: 100%;
     height: 200px;
@@ -26,14 +104,14 @@
 
 /* 文章预览布局 */
 .post-preview {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid #eee;
 }
 
 .post-title {
     margin: 0 0 0.5rem;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .post-content-excerpt {

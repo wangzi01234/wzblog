@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plan.css') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=EB+Garamond&display=swap" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </head>
 <body>
     <header>
@@ -38,4 +39,36 @@
     <script>hljs.highlightAll();</script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
+<!-- <script src="{{ url_for('static', filename='js/calendar.js') }}"></script> -->
+<script>
+    function changeMonth(offset) {
+        let newMonth = {{ month }} + offset;
+        let newYear = {{ year }};
+        
+        if (newMonth > 12) {
+            newMonth = 1;
+            newYear++;
+        } else if (newMonth < 1) {
+            newMonth = 12;
+            newYear--;
+        }    
+        updateCalendar(newYear, newMonth);
+    }
+
+    function changeYear(offset) {
+        updateCalendar({{ year }} + offset, {{ month }});
+    }
+
+    function selectDate(dateStr) {
+        window.location.href = `/plan/${dateStr}`;
+    }
+
+    // 修改后（需要传递日期保持选中状态）
+    function updateCalendar(year, month) {
+        // 构造当月第一天日期
+        const baseDate = `${year}-${String(month).padStart(2, '0')}-01`;
+        window.location.href = `/plan/${baseDate}`;
+    }
+</script>
+
 </html>

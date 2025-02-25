@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>最新文章</h1>
+<header class="category-header">
+    <h1>最新文章</h1>
+</header>
 <div class="post-list">
     {% for post in posts %}
     <article class="post-preview">

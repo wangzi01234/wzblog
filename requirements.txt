@@ -6,3 +6,4 @@ minio
 python-dotenv
 flask_sqlalchemy
 pymysql
+cryptography

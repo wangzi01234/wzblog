@@ -7,43 +7,28 @@
 </header>
 
 <div class="post-list">
- 
-    <!-- 新增分类特色展示 -->
-    <div class="featured-posts">
-        {% for post in posts if post.featured %}
-        <article class="post-card">
-            <img src="{{ post.cover }}" class="post-cover">
-            <div class="post-card-content">
-                <h2><a href="{{ url_for('show_post', slug=post.slug) }}">{{ post.title }}</a></h2>
-                <div class="post-meta">
-                    <span class="post-author">{{ post.author }}</span>
-                    <time>{{ post.date }}</time>
-                </div>
+    <!-- 统一文章展示组件 -->
+    <div class="posts-container {{ 'featured-mode' if featured_mode else 'normal-mode' }}">
+        {% for post in posts %}
+        <article class="post-preview {% if post.featured %}featured-post{% endif %}">
+            <h2 class="post-title">
+                <a href="{{ url_for('show_post', slug=post.slug) }}">{{ post.title }}</a>
+            </h2>
+            
+            {% if post.excerpt %}
+            <div class="post-content-excerpt">
+                {{ post.excerpt|truncate(150) }}
+            </div>
+            {% endif %}
+            
+            <div class="post-meta">
+                {% if post.author %}
+                <span class="post-author">{{ post.author }}</span>
+                {% endif %}
+                <time class="post-date">{{ post.date }}</time>
             </div>
         </article>
         {% endfor %}
     </div>
-
-    <!-- 常规文章列表 -->
-    {% for post in posts %}
-    <article class="post-preview">
-        <div class="post-info">
-            <h2><a href="{{ url_for('show_post', slug=post.slug) }}">{{ post.title }}</a></h2>
-            <div class="post-excerpt">
-                {{ post.excerpt|truncate(150) }}
-            </div>
-            <div class="post-meta">
-                <time class="post-date">{{ post.date }}</time>
-            </div>
-            <!-- <div class="post-stats">
-                <span class="word-count">{{ post.word_count }}字</span>
-                <span class="read-time">阅读约 {{ post.read_time }}分钟</span>
-            </div> -->
-        </div>
-        {% if post.cover %}
-        <img src="{{ post.cover }}" class="post-thumbnail">
-        {% endif %}
-    </article>
-    {% endfor %}
 </div>
 {% endblock %}

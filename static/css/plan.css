@@ -1,61 +1,118 @@
 .plan-page{
-    display: grid;
-    margin: 20px;
-    /*  声明列的宽度  */
-    /* grid-template-columns: repeat(auto-fill, 1fr); */
-    grid-template-columns: repeat(auto-fill, 1fr);
-    grid-gap: 20px;
-}
-
-/* 统计图表区域 */
-.stats-section {
-  height: 300px;
-  margin: 20px;
-  background: #f5f5f5;
-  border-radius: 8px;
-}
-
-/* 当日计划列表 */
-.plan-list {
-  list-style: none;
-  padding: 0;
-}
-
-.plan-item {
-  background: white;
-  margin: 10px;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.plan-item.completed {
-  opacity: 0.6;
-  background: #f0f0f0;
-}
-
-/* 日历样式 */
-.calendar {
-  /* background: #8cfff0; */
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  margin: 20px;
+  /*  声明列的宽度  */
+  /* grid-template-columns: repeat(auto-fill, 1fr); */
+  grid-template-columns: repeat(auto-fill, 1fr);
+  grid-gap: 20px;
+}
+/* 日历 */
+/* 日历容器 */
+.calendar-container {
+  background: white;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   margin: 20px;
 }
-
-.calendar-day {
-  padding: 10px;
-  text-align: center;
+/* 日历导航居中 */
+.calendar-nav {
+  margin: 0 auto 20px;  /* 上下20px间距，水平居中 */
+  display: flex;
+  justify-content: center;  /* 主轴居中 */
+  align-items: center;     /* 交叉轴居中 */
+  gap: 15px;
+  padding: 12px 0;
+  width: fit-content;     /* 根据内容自动调整宽度 */
+  position: relative;     /* 为伪元素定位准备 */
+}
+/* 标题宽度自适应 */
+.calendar-nav h2 {
+  min-width: auto;       /* 移除固定宽度 */
+  padding: 0 20px;       /* 增加呼吸空间 */
+}
+/* 导航按钮 */
+.nav-button {
+  padding: 8px 16px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  color: #4ecdc4;
   cursor: pointer;
-  border-radius: 4px;
+  transition: all 0.2s;
+}
+.nav-button:hover {
+  background: #4ecdc4;
+  color: white;
+  border-color: #4ecdc4;
+}
+/* 日历表格 */
+.calendar-table {
+  width: 100%;
+  margin: 15px 0;
+}
+.calendar-table th,
+.calendar-table td {
+  padding: 14px;
+  text-align: center;
+  border: 1px solid #f0f0f0;
+  transition: all 0.2s;
+  border-radius: 6px;
+}
+.calendar-table th {
+  background: #f8f9fa;
+  color: #45b7d1;
+  font-weight: 500;
+}
+.calendar-table td:not(.prev-month):not(.next-month) {
+  color: #333;
+}
+/* 日期交互效果 */
+.calendar-table td:not(.prev-month):not(.next-month):hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(78, 205, 196, 0.2);
+}
+/* 通过选择器顺序和特异性控制优先级 */
+.calendar-table td {
+  /* 基础样式 */
+  color: #333;
+  background: white;
+}
+/* 先定义非当月样式 */
+.calendar-table td.prev-month,
+.calendar-table td.next-month {
+  color: #ced4da;
+  background: #f8f9fa;
+}
+/* 后定义当月周末样式（更高特异性） */
+.calendar-table td:not(.prev-month):not(.next-month):nth-child(6),
+.calendar-table td:not(.prev-month):not(.next-month):nth-child(7) {
+  background: #fff5f5;
+  color: #ff6b6b;
+}
+/* 选中日期 */
+.selected-date {
+  background: #4ecdc4 !important;
+  color: white !important;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+.selected-date:after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 2px;
 }
 
-.calendar-day:hover {
-  background: #e3f2fd;
-}
-
+/*  计划  */
 /* 分类容器，默认纵向排列 */
-.category-container {
+.plans-container {
   /* background: #ffaaaa; */
   display: grid;
   margin: 20px;
@@ -63,37 +120,38 @@
   /* grid-template-columns: repeat(auto-fill, 1fr); */
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
-}
-
-/* 分类盒子 */
-.category-box {
-  padding: 15px;
+  }
+  /* 分类盒子 */
+.plans-box {
+  padding: 10px;
   border-radius: 8px;
   background: white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
-
 /* 分类标题 */
-.category-title {
+.plans-title {
   margin: 0 0 12px 0;
-  padding-bottom: 8px;
+  padding-bottom: 4px;
   border-bottom: 2px solid;
 }
-
 /* 分类颜色区分 */
-.category-work .category-title {
+.plans-work .plans-title {
    border-color: #ff6b6b; color: #ff6b6b; 
-  }
-.category-study .category-title {
+}
+.plans-study .plans-title {
    border-color: #4ecdc4; color: #4ecdc4; 
-  }
-.category-life .category-title {
+}
+.plans-life .plans-title {
    border-color: #45b7d1; color: #45b7d1; 
-  }
-.category-health .category-title {
+}
+.plans-health .plans-title {
    border-color: #f30061; color: #f30061; 
-  }
-
+}
+/* 当日计划列表 */
+.plan-list {
+  list-style: none;
+  padding: 0;
+}
 /* 计划行 */
 .plan-row {
   display: flex;
@@ -101,7 +159,6 @@
   padding: 8px 0;
   border-bottom: 1px solid #eee;
 }
-
 /* 已完成状态 */
 .plan-row.completed {
   opacity: 0.7;
@@ -113,7 +170,6 @@
 .plan-row.completed .plan-content {
   color: #bbb;
 }
-
 /* 计划文本样式 */
 .plan-title {
   font-weight: 500;
@@ -129,10 +185,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 /* 空状态提示 */
 .plan-empty {
   color: #999;
   font-style: italic;
   padding: 8px 0;
+}
+.plan-items {
+  margin-top: 10px;
 }

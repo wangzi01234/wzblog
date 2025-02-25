@@ -1,19 +1,45 @@
 {% extends "base.html" %}
-
 {% block content %}
 <div class="plan-page">
-    <!-- 统计图表 -->
-    <div class="stats-section">
-        <canvas id="progressChart"></canvas>
+    <!-- 日历 -->
+    <div class="calendar-section">
+        <div class="calendar-nav">
+            <button class="nav-button" onclick="changeYear(-1)">«</button>
+            <button class="nav-button" onclick="changeMonth(-1)">‹</button>
+            <h2 id="current-month">{{ "%d年%d月"|format(year, month) }}</h2>
+            <button class="nav-button" onclick="changeMonth(1)">›</button>
+            <button class="nav-button" onclick="changeYear(1)">»</button>
+        </div>
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    {% for day in ["一", "二", "三", "四", "五", "六", "日"] %}
+                    <th>{{ day }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for week in calendar %}
+                <tr>
+                    {% for day in week %}
+                    <td class="{{ 'prev-month' if day.month != month }} {{ 'selected-date' if day.date == current_date }}"
+                        {% if day.month == month %} onclick="selectDate('{{ day.date }}')" {% endif %}>
+                        {{ day.day }}  <!-- 直接显示日期，无需额外 div -->
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-    <!-- 当日计划 -->
+    <!-- 当日计划部分保持不变 -->
+    <!-- {{ today_plan_html|safe }} -->
     <div class="today-plan">
         <h2>{{ current_date.strftime('%Y-%m-%d') }} 计划</h2>
-        <div class="category-container">
+        <div class="plans-container">
             {% for category in ['work', 'study', 'life', 'health'] %}
-            <div class="category-box category-{{ category }}">
-                <h3 class="category-title">{{ category|capitalize }}</h3>
+            <div class="plans-box plans-{{ category }}">
+                <h3 class="plans-title">{{ category|capitalize }}</h3>
                 <div class="plan-items">
                     {% for plan in today_plans if plan.category == category %}
                     <div class="plan-row {{ 'completed' if plan.is_completed }}">
@@ -28,29 +54,5 @@
             {% endfor %}
         </div>
     </div>
-
-    <!-- 日历 -->
-    <!-- <div class="calendar" id="calendar"></div> -->
 </div>
 {% endblock %}
-
-<!-- <script src="{{ url_for('static', filename='js/calendar.js') }}"></script> -->
-<script>
-    // 初始化图表
-    const ctx = document.getElementById('progressChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Work', 'Study', 'Life'],
-            datasets: [{
-                label: 'Completed',
-                data: [
-                    // {{ stats.work.completed }},
-                    // {{ stats.study.completed }},
-                    // {{ stats.life.completed }}
-                ],
-                backgroundColor: 'rgba(75, 192, 192, 0.6)'
-            }]
-        }
-    });
-</script>

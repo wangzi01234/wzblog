@@ -20,17 +20,6 @@ body {
     margin: 0 auto;
 }
 
-nav {
-    margin: 2rem 0;
-    border-bottom: 1px solid #eee;
-}
-
-nav a {
-    margin-right: 1.5rem;
-    color: var(--secondary-color);
-    text-decoration: none;
-}
-
 pre {
     background: #f8f8f8;
     padding: 1em;
@@ -142,5 +131,217 @@ header p {
     header div {
         font-size: 0.95rem;        /* 减小字号 */
         margin: 0 auto;            /* 水平居中 */
+    }
+}
+
+/* 基础表格样式 */
+.post-content table {
+    width: 100%;
+    /* border-collapse: collapse; */
+    margin: 1.5rem 0;
+    /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; */
+    /* font-size: 0.9rem; */
+    line-height: 1.6;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+  
+  /* 表头样式 */
+.post-content table thead th {
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    background-color: #f0f4f8;
+    /* border-bottom: 2px solid #c8d6e5; */
+    color: #3c4858;
+}
+  
+  /* 表格单元格 */
+.post-content table td {
+    padding: 0.75rem;
+    border-top: 1px solid #dae2ec;
+    vertical-align: top;
+}
+  
+  /* 斑马纹交替行 */
+.post-content tbody tr:nth-child(even) {
+    background-color: #f8fafb;
+}
+  
+  /* 悬停效果 */
+.post-content table tbody tr:hover {
+    background-color: #e6f0f7;
+}
+  
+  /* 代码块适配（如果表格中有代码） */
+.post-content table code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    background-color: #f8f9fa;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 85%;
+    max-width: 100%;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+/* 响应式表格（小屏幕横向滚动） */
+@media (max-width: 768px) {
+    .post-content table {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+}
+nav {
+    /* margin: 2rem 0; */
+    border-bottom: 1px solid #ffffff;
+}
+
+nav a {
+    /* margin-right: 1.5rem; */
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+/* 响应式导航样式 */
+.responsive-nav {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    background: #ffffff;
+    padding: 1rem;
+}
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.nav-menu {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.nav-menu a {
+    color: #333;
+    text-decoration: none;
+    padding: 0.5rem 0rem;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.nav-menu a:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+
+  
+/* 新增搜索框样式 */
+.nav-search {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto; /* 桌面端靠右 */
+    order: 2; /* 默认在右侧 */
+}
+
+.search-input {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    width: 180px;
+    height: 18px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+}
+
+.search-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.search-button:hover {
+    color: var(--primary-color);
+}
+
+/* 响应式布局调整 */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: block !important;
+    order: 2;
+    position: static;
+    transform: none;
+  }
+
+  .nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%; /* 紧贴在导航切换按钮下方 */
+    right: 1rem; /* 留出适当边距 */
+    background: #ffffff; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    min-width: 150px; /* 调整宽度以适应内容 */
+    z-index: 1000;
+    padding: 1rem;
+    width: auto; /* 根据内容自动调整宽度 */
+  }
+
+  .nav-menu.active {
+    display: flex !important;
+    flex-direction: column; /* 保持垂直布局 */
+  }
+
+  .nav-menu a {
+    padding: 0.75rem 1rem; /* 调整菜单项的内边距 */
+    color: #333333;
+    text-decoration: none;
+  }
+
+  .nav-menu a:hover {
+    background-color: #f0f0f0; /* 悬停效果 */
+  }
+
+  .responsive-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .nav-search {
+    order: 1; /* 移动到左侧 */
+    margin-left: 0;
+    width: auto;
+  }
+
+  .search-input {
+    width: calc(100% - 2rem); /* 根据容器宽度自动调整，留出内边距空间 */
+  }
+}
+
+@media (max-width: 480px) {
+    .search-input {
+        width: 120px;
     }
 }

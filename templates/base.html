@@ -20,14 +20,21 @@
             <span>&#128161;</span>Creativity
         </div>
     </header>
-    <nav>
-        <a href="/">首页</a>
-        <a href="/tech">技术</a>
-        <a href="/lang">语言</a>
-        <a href="/think">感想</a>
-        <a href="/plan">计划</a>
-        <a href="/book">书架</a>
-        <a href="/about">关于</a>
+    <nav class="responsive-nav">
+        <div class="nav-search">
+            <input type="text" placeholder="搜索..." class="search-input">
+            <button class="search-button">🔍</button>
+        </div>
+        <button class="nav-toggle">☰</button>
+        <div class="nav-menu">
+            <a href="/">首页</a>
+            <a href="/tech">技术</a>
+            <a href="/lang">语言</a>
+            <a href="/think">感想</a>
+            <a href="/plan">计划</a>
+            <a href="/book">书架</a>
+            <a href="/about">关于</a>
+        </div>
     </nav>
     <main>
         {% block content %}{% endblock %}
@@ -35,10 +42,10 @@
     <footer>
         <p>© 2025 wangzi</p>
     </footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 <!-- <script src="{{ url_for('static', filename='js/calendar.js') }}"></script> -->
 <script>
     function changeMonth(offset) {

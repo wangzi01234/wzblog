@@ -6,29 +6,23 @@
   grid-template-columns: repeat(auto-fill, 1fr);
   grid-gap: 20px;
 }
+
 /* 日历 */
-/* 日历容器 */
-.calendar-container {
-  background: white;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-}
 /* 日历导航居中 */
 .calendar-nav {
-  margin: 0 auto 20px;  /* 上下20px间距，水平居中 */
+  margin: 0 auto;
   display: flex;
   justify-content: center;  /* 主轴居中 */
   align-items: center;     /* 交叉轴居中 */
-  gap: 15px;
-  padding: 12px 0;
+  gap: 5px;
   width: fit-content;     /* 根据内容自动调整宽度 */
   position: relative;     /* 为伪元素定位准备 */
 }
 /* 标题宽度自适应 */
 .calendar-nav h2 {
   min-width: auto;       /* 移除固定宽度 */
-  padding: 0 20px;       /* 增加呼吸空间 */
+  padding: 0 10px;       /* 增加呼吸空间 */
+  margin: 10px auto;
 }
 /* 导航按钮 */
 .nav-button {
@@ -48,7 +42,7 @@
 /* 日历表格 */
 .calendar-table {
   width: 100%;
-  margin: 15px 0;
+  line-height: 0.7;
 }
 .calendar-table th,
 .calendar-table td {
@@ -113,9 +107,7 @@
 /*  计划  */
 /* 分类容器，默认纵向排列 */
 .plans-container {
-  /* background: #ffaaaa; */
   display: grid;
-  margin: 20px;
   /*  声明列的宽度  */
   /* grid-template-columns: repeat(auto-fill, 1fr); */
   grid-template-columns: repeat(2, 1fr);

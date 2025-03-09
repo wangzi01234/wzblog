@@ -7,23 +7,80 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/posts.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plan.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=EB+Garamond&display=swap" rel="stylesheet">
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </head>
+<script>
+    // 服务器数据注入（必须放在 calendar.js 之前）
+    window.appConfig = {
+      year: {{ year }},
+      month: {{ month }},
+      current_date: {{ current_date }},
+      planUrl: {{ url_for('plan', date='DATE')|tojson }}
+    };
+</script>
+<script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/calendar.js') }}" defer></script>
 <body>
     <header>
         <a href="/" class="brand">WANGZI</a>
-        <div>
-            <span>&#128293;</span>Courage&nbsp;&nbsp;
-            <span>&#9854;&#65039;</span>Perseverance&nbsp;
-            <span>&#128161;</span>Creativity
+        <div class="header-right">
+            <div class="motto-container">
+                <span>&#128293;</span>Courage&nbsp;&nbsp;
+                <span>&#9854;&#65039;</span>Perseverance&nbsp;
+                <span>&#128161;</span>Creativity
+            </div>
+            <!-- 新增GitHub链接 -->
+            <a href="https://github.com/yourusername" 
+                class="github-link" 
+                target="_blank"
+                rel="noopener noreferrer">
+                <svg class="github-icon" viewBox="0 0 16 16" width="24" height="24">
+                    <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
         </div>
     </header>
     <nav class="responsive-nav">
         <div class="nav-search">
             <input type="text" placeholder="搜索..." class="search-input">
             <button class="search-button">🔍</button>
+            <!-- 新增筛选按钮及下拉面板 -->
+            <div class="filter-container">
+                <button class="filter-button">筛选 ▼</button>
+                <div class="filter-dropdown">
+                    <!-- 分类筛选 -->
+                    <div class="filter-group">
+                        <h4 class="filter-title">分类</h4>
+                        <ul class="filter-list">
+                        <li><a href="#tech">技术</a></li>
+                        <li><a href="#lang">语言</a></li>
+                        <li><a href="#think">感想</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Tag筛选 -->
+                    <div class="filter-group">
+                        <h4 class="filter-title">标签</h4>
+                        <ul class="filter-list tag-cloud">
+                        <li><a href="#html">HTML</a></li>
+                        <li><a href="#css">CSS</a></li>
+                        <li><a href="#js">JavaScript</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 日期筛选 -->
+                    <div class="filter-group">
+                        <h4 class="filter-title">日期</h4>
+                        <ul class="filter-list date-archive">
+                        <li><a href="#2025-03">2025年3月</a></li>
+                        <li><a href="#2025-02">2025年2月</a></li>
+                        <li><a href="#2025-01">2025年1月</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
         <button class="nav-toggle">☰</button>
         <div class="nav-menu">
@@ -43,11 +100,8 @@
         <p>© 2025 wangzi</p>
     </footer>
 </body>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
-<script>hljs.highlightAll();</script>
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-<!-- <script src="{{ url_for('static', filename='js/calendar.js') }}"></script> -->
-<script>
+
+<!-- <script>
     function changeMonth(offset) {
         let newMonth = {{ month }} + offset;
         let newYear = {{ year }};
@@ -61,21 +115,19 @@
         }    
         updateCalendar(newYear, newMonth);
     }
-
     function changeYear(offset) {
         updateCalendar({{ year }} + offset, {{ month }});
     }
-
     function selectDate(dateStr) {
         window.location.href = `/plan/${dateStr}`;
     }
-
     // 修改后（需要传递日期保持选中状态）
     function updateCalendar(year, month) {
         // 构造当月第一天日期
         const baseDate = `${year}-${String(month).padStart(2, '0')}-01`;
         window.location.href = `/plan/${baseDate}`;
     }
-</script>
-
+</script> -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 </html>

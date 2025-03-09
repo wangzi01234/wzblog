@@ -21,6 +21,7 @@ app = create_app()
 # ... 其他路由保持不变 ...
 @app.route('/')
 def index():
+    print(123)
     return render_template('index.html', posts=get_posts())
 
 @app.route('/post/<slug>')
@@ -50,37 +51,51 @@ def think():
 
 @app.route('/plan')
 def plan():
-    # 获取参数
-    year = request.args.get('year', type=int, default=datetime.now().year)
-    month = request.args.get('month', type=int, default=datetime.now().month)
-    date_str = request.args.get('date', default=datetime.now().strftime('%Y-%m-%d'))
-    
-    # 处理月份溢出
-    if month > 12:
-        year += 1
-        month = 1
-    elif month < 1:
-        year -= 1
-        month = 12
-    
+    # 初始化日期处理
+    current_date = datetime.now()    
     try:
-        current_date = datetime.strptime(date_str, '%Y-%m-%d')
-    except:
-        current_date = datetime.now()
-    
+        # 优先级1：处理date查询参数
+        if 'date' in request.args:
+            date_str = request.args.get('date')
+            current_date = datetime.strptime(date_str, '%Y-%m-%d')
+            # 当存在date参数时，强制覆盖year/month参数
+            year = current_date.year
+            month = current_date.month
+        else:
+            print(123)
+            # 优先级2：处理独立的year/month参数
+            year = request.args.get('year', type=int, default=current_date.year)
+            month = request.args.get('month', type=int, default=current_date.month)           
+            # 处理月份溢出逻辑
+            if month > 12:
+                year += 1
+                month = 1
+            elif month < 1:
+                year -= 1
+                month = 12
+            # 生成当前月份第一天作为参考日期
+            current_date = datetime(year, month, 1)
+    except ValueError as e:
+        abort(400, description=f"Invalid date format: {str(e)}")
+    # 获取准确的目标日期（处理可能存在的day参数）
+    try:
+        day = request.args.get('day', type=int, default=current_date.day)
+        target_date = datetime(year, month, day).date()
+    except ValueError:
+        target_date = current_date.date()
     # 生成日历数据
     calendar_data = get_calendar_data(year, month)
-    
-    # 获取当日计划
-    today_plans = get_plans(current_date)
-    
-    # 渲染模板
+    # 获取计划数据
+    today_plans = get_plans(target_date)
+    # 统一模板渲染
     return render_template('plan.html',
-                         year=year,
-                         month=month,
-                         current_date=current_date,
-                         calendar=calendar_data,
-                         today_plans=today_plans)
+        year=year,
+        month=month,
+        current_date=target_date,
+        calendar=calendar_data,
+        today_plans=today_plans,
+        stats=get_stats(),
+    )
 
 @app.route('/book')
 def book():
@@ -90,19 +105,7 @@ def book():
 def about():
     return render_template('about.html')
 
-@app.route('/plan/<date>')
-def daily_plans(date):
-    target_date = datetime.strptime(date, '%Y-%m-%d').date()
-    calendar_data = get_calendar_data(target_date.year, target_date.month)
-    return render_template('plan.html',
-                         today_plans=get_plans(target_date),
-                         stats=get_stats(),
-                         current_date=target_date,
-                         calendar=calendar_data,
-                         year=target_date.year,
-                         month=target_date.month,
-                         day=target_date.day
-                         )
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404

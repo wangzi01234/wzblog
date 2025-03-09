@@ -4,17 +4,17 @@
     <!-- 日历 -->
     <div class="calendar-section">
         <div class="calendar-nav">
-            <button class="nav-button" onclick="changeYear(-1)">«</button>
-            <button class="nav-button" onclick="changeMonth(-1)">‹</button>
+            <button class="nav-button" data-action="year-prev"">«</button>
+            <button class="nav-button" data-action="month-prev">‹</button>
             <h2 id="current-month">{{ "%d年%d月"|format(year, month) }}</h2>
-            <button class="nav-button" onclick="changeMonth(1)">›</button>
-            <button class="nav-button" onclick="changeYear(1)">»</button>
+            <button class="nav-button" data-action="month-next">›</button>
+            <button class="nav-button" data-action="year-next">»</button>
         </div>
         <table class="calendar-table">
             <thead>
                 <tr>
-                    {% for day in ["一", "二", "三", "四", "五", "六", "日"] %}
-                    <th>{{ day }}</th>
+                    {% for title in ["一", "二", "三", "四", "五", "六", "日"] %}
+                    <th>{{ title }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -22,9 +22,8 @@
                 {% for week in calendar %}
                 <tr>
                     {% for day in week %}
-                    <td class="{{ 'prev-month' if day.month != month }} {{ 'selected-date' if day.date == current_date }}"
-                        {% if day.month == month %} onclick="selectDate('{{ day.date }}')" {% endif %}>
-                        {{ day.day }}  <!-- 直接显示日期，无需额外 div -->
+                    <td class="{{ 'prev-month' if day.month != month }} {{ 'selected-date' if day.date == current_date }}" data-date="{{ day.date }}">
+                        {{ day.day }}
                     </td>
                     {% endfor %}
                 </tr>

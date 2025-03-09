@@ -2,7 +2,6 @@ from markdown import markdown
 import os
 import yaml  # 需要安装 pyyaml
 from controller.minio import minio_client
-from pymdownx.blocks import BlocksExtension
 
 
 def parse_markdown(content):

@@ -2,8 +2,8 @@
 
 {% block content %}
 <header class="category-header">
-    <h1>{{ category_name }}</h1>
-    <p class="category-description">{{ category_desc }}</p>
+    <h1>{{ category.name }}</h1>
+    <p class="category-description">{{ category.description }}</p>
 </header>
 
 <div class="post-list">
@@ -12,7 +12,7 @@
         {% for post in posts %}
         <article class="post-preview {% if post.featured %}featured-post{% endif %}">
             <h2 class="post-title">
-                <a href="{{ url_for('show_post', slug=post.slug) }}">{{ post.title }}</a>
+                <a href="{{ url_for('show_post', category = post.category, slug = post.slug) }}">{{ post.title }}</a>
             </h2>
             
             {% if post.excerpt %}

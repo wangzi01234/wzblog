@@ -1,7 +1,9 @@
 ### **3. 修改 app.py 的解析逻辑**
 from flask import Flask, render_template, abort, request
-from controller.posts import get_posts
-from controller.plans import get_plans, get_stats, get_calendar_data
+from service.posts import get_info, get_content
+from service.plans import get_plans, get_stats, get_calendar_data
+from service.resourcs import get_resources
+from service.category import get_category
 from extensions import db
 from datetime import datetime
 from dotenv import load_dotenv
@@ -21,29 +23,23 @@ app = create_app()
 # ... 其他路由保持不变 ...
 @app.route('/')
 def index():
-    print(123)
-    return render_template('index.html', posts=get_posts())
+    return render_template('index.html', posts=get_info())
 
-@app.route('/post/<slug>')
-def show_post(slug):
-    posts = get_posts()
-    post = next((p for p in posts if p['slug'] == slug), None)
-    return render_template('post.html', post=post) if post else abort(404)
+@app.route('/post/<category>/<slug>')
+def show_post(category, slug):
+    content = get_content(category, slug)
+    return render_template('post.html', content=content, title=slug) if content else abort(404)
 
-@app.route('/tech')
-def tech():
-    posts = get_posts(category='tech')
+@app.route('/category/<category>')
+def category(category):
+    posts=get_info(category)
+    category=get_category(category)
+    if category is None:
+        print("122222")
+        abort(404)
     return render_template('category.html', 
                          posts=posts,
-                         category_name='技术杂谈',
-                         category_desc='这里分享技术开发心得')
-@app.route('/lang')
-def lang():
-    posts = get_posts(category='lang')
-    return render_template('category.html', 
-                         posts=posts,
-                         category_name='语言学习',
-                         category_desc='这里分享语言学习心得')
+                         category=category)
 
 @app.route('/think')
 def think():
@@ -62,7 +58,6 @@ def plan():
             year = current_date.year
             month = current_date.month
         else:
-            print(123)
             # 优先级2：处理独立的year/month参数
             year = request.args.get('year', type=int, default=current_date.year)
             month = request.args.get('month', type=int, default=current_date.month)           
@@ -105,7 +100,16 @@ def book():
 def about():
     return render_template('about.html')
 
+@app.route('/resource')
+def resource():
+    return render_template('resource.html', 
+                        resources = get_resources(),
+                        category_name='资源分享',
+                        category_desc='各类资源分享')
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
+if __name__ == '__main__':
+    app.run(debug=True)

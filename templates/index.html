@@ -9,7 +9,7 @@
     <article class="post-preview">
         <!-- 第一行：标题 -->
         <h2 class="post-title">
-            <a href="{{ url_for('show_post', slug=post.slug) }}">{{ post.title }}</a>
+            <a href="{{ url_for('show_post', category = post.category, slug = post.slug) }}">{{ post.title }}</a>
         </h2>
 
         <!-- 第二行：内容摘要 -->

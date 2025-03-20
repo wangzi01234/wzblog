@@ -1,0 +1,207 @@
+/* 导航容器 */
+.responsive-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px;
+    position: relative;
+  }
+  
+  /* 移动端菜单按钮 */
+  .nav-toggle {
+    order: 1;
+    display: none; /* 默认隐藏 */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  /* 导航菜单 */
+  .nav-menu {
+    order: 2;
+    display: flex;
+    gap: 15px;
+    flex: 1; /* 占据剩余空间 */
+  }
+  
+  /* 导航链接 */
+  .nav-menu a {
+    color: #333;
+    text-decoration: none;
+    padding: 0.5rem 0.3rem;
+  }
+  
+  .nav-menu a:hover {
+    background: rgba(0,0,0,0.05);
+  }
+  
+  /* 搜索容器 */
+  .nav-search {
+    order: 3;
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+  }
+  
+  .search-input {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    width: 150px;
+    transition: all 0.3s ease;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+  }
+  
+  .search-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #666;
+    transition: color 0.3s ease;
+  }
+  
+  .search-button:hover {
+    color: var(--primary-color);
+  }
+  
+  /* 筛选容器 */
+  .nav-filter {
+    order: 4;
+    position: relative;
+  }
+  
+  /* 筛选按钮 - 与搜索按钮对齐 */
+  .filter-button {
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    border: 0;
+  }
+  
+  /* 下拉面板 - 增强质感 */
+  .filter-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    visibility: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 25px;
+  }
+
+  .filter-dropdown a{
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+  }
+  
+  /* 激活状态 */
+  .filter-dropdown.active {
+    visibility: visible;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    opacity: 1;
+    transform: translateY(0);
+    z-index: 999;
+    pointer-events: auto;
+    transition: 
+      opacity 0.3s ease,
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 0s;
+  }
+
+.filter-section {
+  margin-bottom: 1.5rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.horizontal-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.scrollable-tags {
+  overflow-x: auto;
+  padding-bottom: 8px; /* 留出滚动条空间 */
+}
+
+.tag-container {
+  display: flex;
+  gap: 8px;
+  min-width: max-content;
+}
+
+/* 分类样式 */
+.filter-pill {
+  display: block;
+  padding: 8px 16px;
+  background: #f0f0f0;
+  border-radius: 20px;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.filter-pill:hover {
+  background: #e0e0e0;
+}
+
+/* 标签样式 */
+.filter-tag {
+  white-space: nowrap;
+  padding: 6px 12px;
+  background: #f8f8f8;
+  border-radius: 16px;
+  font-size: 0.9em;
+}
+
+/* 日期选择 */
+.date-selectors {
+  display: flex;
+  gap: 10px;
+}
+
+.date-selectors select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+}
+
+  
+  /* 响应式处理 */
+  @media (max-width: 768px) {
+    .nav-toggle {
+      display: block;
+    }
+  
+    .nav-menu {
+      display: none;
+      width: 100%;
+      order: 5;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      padding: 12px;
+      z-index: 1000;
+    }
+  
+    .nav-menu.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+  }
+  

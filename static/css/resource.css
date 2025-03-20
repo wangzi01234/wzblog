@@ -1,0 +1,177 @@
+/* 筛选栏容器 */
+.resource-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 12px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  
+  /* 第一行容器 */
+  .resource-filters > :not(.tag-cloud) {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  /* 搜索框靠右 */
+  .search-box {
+    margin-left: auto;
+  }
+  
+  /* 标签云容器 */
+  .tag-cloud {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    order: 1; /* 强制换到第二行 */
+  }
+  
+/* 筛选组 */
+.filter-group {
+    position: relative;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+/* 下拉选择框 */
+.filter-select {
+    appearance: none;
+    padding: 8px 32px 8px 12px;
+    border: none;
+    background: none;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    min-width: 120px;
+}
+  /* 下拉箭头 */
+.filter-group::after {
+    content: "▾";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    pointer-events: none;
+}
+  /* 标签样式 */
+  .tag-pill {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #f0f0f0;
+    border-radius: 15px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.2s;
+  }
+  
+  .tag-pill.active {
+    background: #1677ff;
+    color: white;
+  }
+
+
+  /* 资源列表容器 */
+.resource-list {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* 单个资源项 */
+.resource-item {
+  padding: 1.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eee;
+}
+
+/* 名称样式 */
+.resource-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+/* 链接样式 */
+.resource-link {
+  display: block;
+  font-size: 0.9rem;
+  color: #3498db;
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+  word-break: break-all;
+}
+
+.resource-link:hover {
+  text-decoration: underline;
+}
+
+/* 详情描述 */
+.resource-detail {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* 底部信息容器 */
+.resource-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* 标签样式 */
+.resource-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.resource-tag {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.75rem;
+  background: #f0f0f0;
+  border-radius: 12px;
+  color: #666;
+}
+
+/* 作者和来源 */
+.resource-info {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.resource-source {
+  padding: 0.25rem 0.5rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .resource-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .resource-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

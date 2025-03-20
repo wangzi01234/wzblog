@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="category-header">
+    <h1>{{ category_name }}</h1>
+    <p class="category-description">{{ category_desc }}</p>
+</header>
+
+<!-- 筛选栏 -->
+<div class="resource-filters">
+    <!-- 分类过滤 -->
+    <div class="filter-group">
+        <select class="filter-select">
+            <option value="">全部分类</option>
+            <option>编程开发</option>
+            <option>人工智能</option>
+            <option>数据科学</option>
+            <option>设计艺术</option>
+        </select>
+    </div>
+
+    <!-- 来源过滤 -->
+    <div class="filter-group">
+        <select class="filter-select">
+            <option value="">全部来源</option>
+            <option>官方文档</option>
+            <option>在线课程</option>
+            <option>技术博客</option>
+            <option>开源项目</option>
+        </select>
+    </div>
+
+    <!-- 标签云 -->
+    <div class="tag-cloud">
+        <a href="#" class="tag-pill active">Python</a>
+        <a href="#" class="tag-pill">机器学习</a>
+        <a href="#" class="tag-pill">前端</a>
+        <a href="#" class="tag-pill">算法</a>
+    </div>
+
+    <!-- 搜索框 -->
+    <div class="search-box">
+        <input type="text" placeholder="搜索..." class="search-input">
+        <button class="search-button">🔍</button>
+    </div>
+</div>
+<div class="resource-list">
+    {% for resource in resources %}
+    <article class="resource-item">
+      <!-- 第一行：名称 -->
+      <div class="resource-name">{{ resource.name }}</div>
+      
+      <!-- 第二行：链接 -->
+      <a href="{{ resource.link }}" class="resource-link" target="_blank">{{ resource.link }}</a>
+      
+      <!-- 第三行：详情 -->
+      <div class="resource-detail">{{ resource.detail }}</div>
+      
+      <!-- 第四行：标签/作者/来源 -->
+      <div class="resource-footer">
+        <div class="resource-tags">
+          {% for tag in resource.tags %}
+          <span class="resource-tag">#{{ tag }}</span>
+          {% endfor %}
+        </div>
+        <div class="resource-info">
+          <span class="resource-author">{{ resource.author }}</span>
+          <span class="resource-source">{{ resource.source }}</span>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,134 @@
+:root {
+    --primary-color: #2c3e50;    /* 主色调 */
+    --secondary-color: #7f8c8d;  /* 副色调 */
+    --hover-color: #3498db;       /* 悬停色 */
+    --transition-speed: 0.3s;     /* 过渡速度 */
+    --header-gradient: linear-gradient(135deg, var(--primary-color) 0%, #2c3e50 100%);
+    --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --gold-accent: #FFD700;
+}
+
+body {
+    font-family: 'Cormorant Garamond', 'EB Garamond', 'Alegreya Sans SC', serif;
+    line-height: 1.6;
+    color: var(--primary-color);
+    background: var(--background-color);
+    margin: 0;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+pre {
+    background: #f8f8f8;
+    padding: 1em;
+    overflow-x: auto;
+    border-radius: 3px;
+}
+
+code {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+footer {
+    text-align: center;
+    margin: 4rem 0;
+    color: var(--secondary-color);
+}
+
+h1{    
+    font-size: 1.8rem;
+}
+
+/* Header容器基础样式 */
+header {
+    background-color: #ffffff;    /* 背景色 */
+    padding: 1rem 1rem;         /* 内边距 */
+    position: relative;           /* 定位上下文 */
+}
+
+/* 品牌标识样式 */
+.brand {
+    display: inline-block;        /* 行内块级显示 */
+    font-family: 'Cormorant Garamond', 'EB Garamond', 'Alegreya Sans SC', serif; /* 字体栈 */
+    font-size: 2.2rem;            /* 基础字号 */
+    font-weight: 700;             /* 字重 */
+    color: var(--primary-color);  /* 使用主色调 */
+    text-decoration: none;        /* 去除下划线 */
+    letter-spacing: -0.5px;       /* 字间距微调 */
+    transition: all var(--transition-speed) ease; /* 平滑过渡 */
+
+    /* 悬停动效 */
+    &:hover {
+        color: var(--hover-color);
+        transform: translateY(-2px);
+    }
+
+    /* 点击反馈 */
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+/* 描述文字样式 */
+header p {
+    margin: 0.8rem 0 0;           /* 上边距 */
+    font-size: 1.1rem;            /* 小于品牌文字 */
+    color: var(--secondary-color);/* 使用副色调 */
+    line-height: 1.5;             /* 行高 */
+    max-width: 600px;             /* 最大宽度限制 */
+    opacity: 0.9;                 /* 轻微透明 */
+}
+
+/* 响应式设计 */
+@media screen and (min-width: 768px) {
+    /* 桌面端布局 */
+    header {
+        display: flex;              /* 弹性布局 */
+        align-items: baseline;      /* 基线对齐 */
+        gap: 1.5rem;                /* 元素间距 */
+        padding: 1.5rem 2rem;         /* 增大内边距 */
+    }
+
+    .brand {
+        font-size: 2.5rem;          /* 增大字号 */
+    }
+
+    header div {
+        margin-top: 0;             /* 重置上边距 */
+        font-size: 1.2rem;         /* 增大字号 */
+        position: relative;        /* 伪元素定位 */
+        
+        /* 添加装饰竖线 */
+        &::before {
+        content: "";
+        position: absolute;
+        left: -0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 60%;
+        width: 2px;
+        background-color: var(--secondary-color);
+        opacity: 0.3;
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* 移动端优化 */
+    header {
+        padding: 1rem;
+        text-align: center;         /* 居中对齐 */
+    }
+
+    .brand {
+        font-size: 1.8rem;         /* 减小字号 */
+        display: block;            /* 块级显示 */
+        margin-bottom: 0.5rem;     /* 下边距 */
+    }
+
+    header div {
+        font-size: 0.95rem;        /* 减小字号 */
+        margin: 0 auto;            /* 水平居中 */
+    }
+}

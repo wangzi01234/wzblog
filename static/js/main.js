@@ -95,15 +95,43 @@ class FilterController extends BaseController {
   }
 }
 
-  // ==================== 初始化执行 ====================
-  const initializeControllers = () => {
-    try {
-      new NavController();
-      new FilterController();
-    } catch (error) {
-      console.error('Controller initialization failed:', error);
+// ==================== 日期搜索控制器 ====================
+class DateSearchController extends BaseController {
+  init() {
+    this.searchButton = document.getElementById('date-search-button');
+    this.yearSelect = document.querySelector('.year-select');
+    this.monthSelect =document.querySelector('.month-select');
+    this.daySelect = document.querySelector('.day-select');
+    
+    if (this.searchButton) {
+      this.bindEvents();
     }
-  };
+  }
+
+  bindEvents() {
+    this.searchButton.addEventListener('click', e => this.handleDateSearch(e));
+  }
+
+  handleDateSearch(e) {
+    e.preventDefault();
+    const year = this.yearSelect.value;
+    const month = this.monthSelect.value.padStart(2, '0');
+    const day = this.daySelect.value.padStart(2, '0');
+    
+    window.location.href = `/date/${year}-${month}-${day}`;
+  }
+}
+
+// ==================== 初始化执行 ====================
+const initializeControllers = () => {
+  try {
+    new NavController();
+    new FilterController();
+    new DateSearchController(); // 新增控制器
+  } catch (error) {
+    console.error('Controller initialization failed:', error);
+  }
+};
 
   // 执行初始化（DOMContentLoaded 由 defer 保证）
   initializeControllers();

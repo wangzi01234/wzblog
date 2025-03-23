@@ -126,7 +126,6 @@ class DateSearchController extends BaseController {
 class NavSearchController extends BaseController {
   init() {
     this.searchButton = document.getElementById('nav-search-btn');
-    console.log(this.searchButton)
     this.searchInput = document.getElementById('nav-search-input');
     if (this.searchButton) {
       this.bindEvents();

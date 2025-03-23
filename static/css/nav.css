@@ -40,7 +40,7 @@
   .nav-search {
     order: 3;
     display: flex;
-    gap: 8px;
+    gap: 4px;
     margin-left: auto;
   }
   
@@ -65,6 +65,7 @@
     font-size: 1.2rem;
     color: #666;
     transition: color 0.3s ease;
+    padding: 0;
   }
   
   .search-button:hover {
@@ -95,12 +96,13 @@
     visibility: hidden;
     box-sizing: border-box;
     width: 100%;
-    padding: 25px;
+    padding: 20px;
+    font-size: 0.9rem;
   }
 
   .filter-dropdown a{
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    /* padding: 0.5rem 1rem; */
   }
   
   /* 激活状态 */
@@ -125,6 +127,7 @@
     gap: 18px; /* 标题与滚动容器间距 */
     width: 100%;
     margin-bottom: 10px;
+    padding-top: 5px;
   }
   
   .horizontal-list {
@@ -142,30 +145,27 @@
     display: flex;
     gap: 8px;
     min-width: max-content;
+    margin-bottom: 5px;
   }
   
-  /* 分类样式 */
-  .filter-pill {
-    display: block;
-    padding: 8px 16px;
-    background: #f0f0f0;
-    border-radius: 20px;
-    color: #666;
-    transition: all 0.2s;
-  }
-  
-  .filter-pill:hover {
-    background: #e0e0e0;
-  }
-  
-  /* 标签样式 */
-  .filter-tag {
-    white-space: nowrap;
-    padding: 6px 12px;
-    background: #f8f8f8;
-    border-radius: 16px;
-    font-size: 0.9em;
-  }
+/* 分类筛选标签 - 主色调 */
+.filter-pill {
+  padding: 8px 20px;
+  background: rgba(16, 185, 129, 0.08); /* 绿色系 */
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+  font-size: 0.95rem;
+}
+
+.filter-pill:hover {
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.filter-pill.active {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: white;
+  border-color: transparent;
+}
   
 /* 操作按钮容器 */
 .filter-operation {
@@ -185,9 +185,6 @@
     text-decoration: none;
     color: #333;
     transition: all 0.2s;
-    /* background: #1677ff;
-    color: white; */
-  
 }
 
 /* 清空按钮 */
@@ -213,58 +210,147 @@
   border-color: #0062cc;   /* 同步加深 */
 }
 
+/* 日期选择 */
+.date-selectors select {
+  padding: 4px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+}
+
 /* 移动端适配 */
 @media (max-width: 480px) {
   .filter-button {
     padding: 8px 16px;     /* 缩小左右间距 */
     font-size: 14px;       /* 适当缩小字号 */
   }
+  .filter-pill {
+    padding: 4px 12px;
+    font-size: 0.8rem;
+}
 }
 
-
-/* 日期选择 */
-/* .date-selectors {
-  display: flex;
-  gap: 5px;
-} */
-
-.date-selectors select {
-  padding: 6px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background: white;
-}
-
-
-  /* 响应式处理 */
-  @media (max-width: 768px) {
-    .responsive-nav {
-      gap: 6px;
-      padding: 12px 6px;
-    }
-
-    .nav-toggle {
-      display: block;
-    }
-  
-    .nav-menu {
-      display: none;
-      width: 100%;
-      order: 5;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: white;
-      z-index: 1000;
-    }
-  
-    .nav-menu.active {
-      display: flex;
-      flex-direction: column;
-    }
-    .search-input {
-      width: 120px;
-    }
+/* 响应式处理 */
+@media (max-width: 768px) {
+  .responsive-nav {
+    gap: 6px;
+    padding: 10px 0;
   }
-  
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .nav-menu {
+    display: none;
+    width: 100%;
+    order: 5;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    z-index: 1000;
+    padding: 20px 10px;
+  }
+
+  .nav-menu.active {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-input {
+    width: 110px;
+  }
+
+  .category-header {
+    padding: 0;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* 日期选择容器 */
+.date-selectors {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+/* 下拉选择框统一样式 */
+.date-selectors select {
+  padding: 8px 16px;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: #f97316; /* 主橙色 */
+  /* background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg...'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e"); */
+  border-radius: 8px;
+  background: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.3, 0, 0.2, 1);
+  appearance: none; /* 移除原生样式 */
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+/* 悬停状态 */
+.date-selectors select:hover {
+  border-color: #f97316;
+  box-shadow: 0 2px 6px rgba(249, 115, 22, 0.1);
+}
+
+/* 聚焦状态 */
+.date-selectors select:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2),
+              0 4px 12px rgba(249, 115, 22, 0.1);
+}
+
+.date-selector-group::after {
+  content: attr(data-unit);
+  color: #64748b;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* 响应式优化 - 移动端 */
+@media (max-width: 768px) {
+  .date-selectors {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* 创建选择框组 */
+  .date-selector-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  /* 隐藏全局单位文字 */
+  .date-selectors > span {
+    display: none;
+  }
+
+  /* 为每个选项添加单位 */
+  .date-selector-group::after {
+    content: attr(data-unit);
+    color: #64748b;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  /* 调整选择框宽度 */
+  .date-selectors select {
+    flex: 1;
+    min-width: unset;
+    width: calc(100% - 48px); /* 留出单位空间 */
+    background-position: right 12px center;
+    padding: 6px 12px;
+  }
+}

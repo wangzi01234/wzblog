@@ -6,7 +6,9 @@
     --header-gradient: linear-gradient(135deg, var(--primary-color) 0%, #2c3e50 100%);
     --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     --gold-accent: #FFD700;
-    
+    --tag-color: #1677ff;     /* 标签蓝 */
+    --filter-color: #10b981;  /* 分类绿 */
+    --date-color: #f97316;    /* 日期橙 */
 }
 
 body {
@@ -81,6 +83,48 @@ header p {
     opacity: 0.9;                 /* 轻微透明 */
 }
 
+/* 标签基础样式 */
+.tag-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    background: rgba(22, 119, 255, 0.08);
+    border: 1px solid rgba(22, 119, 255, 0.3);
+    border-radius: 20px;
+    color: #1677ff;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.3, 0, 0.2, 1);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+/* 悬停状态 */
+.tag-pill:hover {
+    background: rgba(22, 119, 255, 0.15);
+    /* transform: translateY(-1px); */
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(22, 119, 255, 0.1);
+}
+
+/* 激活状态 */
+.tag-pill.active {
+    background: linear-gradient(135deg, #1677ff, #4096ff);
+    color: white;
+    border-color: transparent;
+    box-shadow: 
+        0 4px 12px rgba(22, 119, 255, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+/* 禁用状态 */
+.tag-pill:disabled {
+    background: #f8f8f8;
+    color: #999;
+    border-color: #eee;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 /* 响应式设计 */
 @media screen and (min-width: 768px) {
     /* 桌面端布局 */
@@ -131,5 +175,10 @@ header p {
     header div {
         font-size: 0.95rem;        /* 减小字号 */
         margin: 0 auto;            /* 水平居中 */
+    }
+    /* 标签基础样式 */
+    .tag-pill {
+        padding: 3px 10px;
+        font-size: 0.8rem;
     }
 }

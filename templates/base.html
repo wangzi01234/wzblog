@@ -47,7 +47,7 @@
                 <h4 class="filter-title">分类</h4>
                 <div class="horizontal-list">
                 {% for category in global_categories %}
-                    <a href="/category/{{ category.slug }}" class="filter-pill">{{ category.name }}</a>
+                    <a href="/category/{{ category.slug }}" class="tag-pill filter-pill">{{ category.name }}</a>
                 {% endfor %}
                 </div>
             </div>
@@ -58,7 +58,7 @@
                 <div class="scrollable-tags">
                     <div class="tag-container">
                         {% for tag in global_tags %}
-                        <a href="/tag/{{ tag.slug }}" class="filter-tag">{{ tag.name }}</a>
+                        <a href="/tag/{{ tag.slug }}" class="tag-pill filter-tag">{{ tag.name }}</a>
                         {% endfor %}
                     </div>
                 </div>
@@ -68,21 +68,29 @@
             <div class="filter-section">
                 <h4 class="filter-title">日期</h4>
                 <div class="date-selectors">
-                    <select class="year-select">
+                    <!-- 年选择组 -->
+                    <div class="date-selector-group" data-unit="年">
+                      <select class="year-select">
                         <option>2025</option>
                         <option>2024</option>
-                    </select>
-                    年
-                    <select class="month-select">
+                      </select>
+                    </div>
+                    
+                    <!-- 月选择组 -->
+                    <div class="date-selector-group" data-unit="月">
+                      <select class="month-select">
                         <option>03</option>
                         <option>02</option>
-                    </select>
-                    月
-                    <select class="day-select">
+                      </select>
+                    </div>
+                    
+                    <!-- 日选择组 -->
+                    <div class="date-selector-group" data-unit="日">
+                      <select class="day-select">
                         <option>15</option>
                         <option>14</option>
-                    </select>
-                    日
+                      </select>
+                    </div>
                 </div>
             </div>
             <div class="filter-operation">

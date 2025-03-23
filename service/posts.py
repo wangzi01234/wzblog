@@ -46,6 +46,11 @@ def get_info(category=None, search=None):
                     Tag.name.ilike(f"%{search}%")
                 )
             )
+
+        # 动态添加分类筛选条件
+        if category:
+            posts_query = posts_query.filter(Article.category == category)
+            
         # 继续构建完整查询
         posts_query = posts_query.with_entities(
             Article.id,
@@ -56,7 +61,7 @@ def get_info(category=None, search=None):
             Article.path,
             func.group_concat(Tag.name).label('tags')
         ).group_by(Article.id).order_by(desc(Article.date), Article.title.asc())
-        
+        print(posts_query)
         # 转换为结构化数据（避免N+1查询问题）
         posts = [
             {

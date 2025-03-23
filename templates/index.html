@@ -2,7 +2,7 @@
 
 {% block content %}
 <header class="category-header">
-    <h1>最新文章</h1>
+    <h2>最新文章</h2>
 </header>
 <div class="post-list">
     {% for post in posts %}
@@ -22,7 +22,7 @@
             <time class="post-date">{{ post.date }}</time>
             <div class="post-tags">
                 {% for tag in post.tags %}
-                <a href="/tag/{{ tag }}" class="tag-pill">#{{ tag }}</a>
+                <a href="/tag/{{ tag }}" class="tag-pill">#&nbsp;{{ tag }}</a>
                 {% endfor %}
             </div>
         </div>

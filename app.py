@@ -45,7 +45,7 @@ def show_post(category, slug):
 @app.route('/category/<category>')
 def category(category):
     return render_template('category.html', 
-                           posts=get_info(category), 
+                           posts=get_info(category=category), 
                            category=get_category(category) 
                            if category else abort(404))
 

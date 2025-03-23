@@ -1,3 +1,6 @@
+article {
+    padding: 0.5rem;
+}
 /* 分类特色展示 */
 .featured-posts {
     display: grid;
@@ -104,8 +107,8 @@
 
 /* 文章预览布局 */
 .post-preview {
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
+    /* margin-bottom: 1rem; */
+    padding: 1rem 0.5rem;
     border-bottom: 1px solid #eee;
 }
 
@@ -123,7 +126,7 @@
 .post-meta {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     font-size: 0.9em;
     color: #888;
 }
@@ -136,18 +139,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-}
-
-.tag-pill {
-    background: #f0f0f0;
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    text-decoration: none;
-    transition: background 0.2s;
-}
-
-.tag-pill:hover {
-    background: #e0e0e0;
 }
 
 /* 基础表格样式 */

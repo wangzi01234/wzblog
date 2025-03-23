@@ -34,8 +34,8 @@
     </header>
     <nav class="responsive-nav">
         <div class="nav-search">
-            <input type="text" placeholder="搜索..." class="search-input">
-            <button class="search-button">🔍</button>
+            <input type="text" placeholder="搜索..." class="search-input" id="nav-search-input">
+            <button class="search-button" id="nav-search-btn">🔍</button>
         </div>
         <!-- 修改后的筛选面板结构 -->
         <div class="nav-filter">
@@ -46,9 +46,9 @@
             <div class="filter-section">
                 <h4 class="filter-title">分类</h4>
                 <div class="horizontal-list">
-                    <a href="/category/tech" class="filter-pill">技术</a>
-                    <a href="/category/lang" class="filter-pill">语言</a>
-                    <a href="/category/think" class="filter-pill">感想</a>
+                {% for category in global_categories %}
+                    <a href="/category/{{ category.slug }}" class="filter-pill">{{ category.name }}</a>
+                {% endfor %}
                 </div>
             </div>
 
@@ -57,10 +57,9 @@
                 <h4 class="filter-title">标签</h4>
                 <div class="scrollable-tags">
                     <div class="tag-container">
-                        <a href="/tag/html" class="filter-tag">HTML</a>
-                        <a href="/tag/css" class="filter-tag">CSS</a>
-                        <a href="/tag/js" class="filter-tag">JavaScript</a>
-                        <!-- 更多标签... -->
+                        {% for tag in global_tags %}
+                        <a href="/tag/{{ tag.slug }}" class="filter-tag">{{ tag.name }}</a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -84,8 +83,11 @@
                         <option>14</option>
                     </select>
                     日
-                    <button id="date-search-button" class="search-button">🔍</button>
                 </div>
+            </div>
+            <div class="filter-operation">
+                <button class="filter-search-button" id="filter-clear">清空</button>
+                <button class="filter-search-button" id="filter-search">查询</button>
             </div>
         </div>
         <button class="nav-toggle">☰</button>

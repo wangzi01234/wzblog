@@ -118,52 +118,109 @@
       visibility 0s;
   }
 
-.filter-section {
-  margin-bottom: 1.5rem;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.horizontal-list {
+  .filter-section {
+    display: grid;
+    grid-template-columns: max-content 1fr; /* 左列自适应标题宽度，右列填充剩余空间 */
+    align-items: center; /* 垂直居中 */
+    gap: 18px; /* 标题与滚动容器间距 */
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .horizontal-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .scrollable-tags {
+    overflow-x: auto;
+    padding-bottom: 8px; /* 留出滚动条空间 */
+  }
+  
+  .tag-container {
+    display: flex;
+    gap: 8px;
+    min-width: max-content;
+  }
+  
+  /* 分类样式 */
+  .filter-pill {
+    display: block;
+    padding: 8px 16px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    color: #666;
+    transition: all 0.2s;
+  }
+  
+  .filter-pill:hover {
+    background: #e0e0e0;
+  }
+  
+  /* 标签样式 */
+  .filter-tag {
+    white-space: nowrap;
+    padding: 6px 12px;
+    background: #f8f8f8;
+    border-radius: 16px;
+    font-size: 0.9em;
+  }
+  
+/* 操作按钮容器 */
+.filter-operation {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0; /* 浅色分割线 */
 }
 
-.scrollable-tags {
-  overflow-x: auto;
-  padding-bottom: 8px; /* 留出滚动条空间 */
+/* 基础按钮样式 */
+.filter-search-button {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #f0f0f0;
+    border-radius: 15px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.2s;
+    /* background: #1677ff;
+    color: white; */
+  
 }
 
-.tag-container {
-  display: flex;
-  gap: 8px;
-  min-width: max-content;
+/* 清空按钮 */
+#filter-clear {
+  border-color: #ccc;      /* 稍深边框 */
+  background: white;       /* 纯白背景 */
 }
 
-/* 分类样式 */
-.filter-pill {
-  display: block;
-  padding: 8px 16px;
-  background: #f0f0f0;
-  border-radius: 20px;
-  color: #666;
-  transition: all 0.2s;
+#filter-clear:hover {
+  background: #f5f5f5;     /* 悬停浅灰 */
+  border-color: #999;      /* 加深边框 */
 }
 
-.filter-pill:hover {
-  background: #e0e0e0;
+/* 查询按钮 */
+#filter-search {
+  background: #007bff;     /* 标准蓝色 */
+  border-color: #007bff;  /* 与背景同色 */
+  color: white;            /* 白文字 */
 }
 
-/* 标签样式 */
-.filter-tag {
-  white-space: nowrap;
-  padding: 6px 12px;
-  background: #f8f8f8;
-  border-radius: 16px;
-  font-size: 0.9em;
+#filter-search:hover {
+  background: #0069d9;     /* 深蓝色 */
+  border-color: #0062cc;   /* 同步加深 */
 }
+
+/* 移动端适配 */
+@media (max-width: 480px) {
+  .filter-button {
+    padding: 8px 16px;     /* 缩小左右间距 */
+    font-size: 14px;       /* 适当缩小字号 */
+  }
+}
+
 
 /* 日期选择 */
 /* .date-selectors {
@@ -177,11 +234,12 @@
   border-radius: 4px;
   background: white;
 }
-  
+
+
   /* 响应式处理 */
   @media (max-width: 768px) {
     .responsive-nav {
-      gap: 10px;
+      gap: 6px;
       padding: 12px 6px;
     }
 

@@ -1,5 +1,5 @@
 from datetime import datetime
-from extensions import db
+from infra import db
 
 class Category(db.Model):
     __tablename__ = 'category'

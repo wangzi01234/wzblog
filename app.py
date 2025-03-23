@@ -1,10 +1,10 @@
 ### **3. 修改 app.py 的解析逻辑**
 from flask import Flask, render_template, abort, request
 from service.posts import get_info, get_content
-from service.plans import get_plans, get_stats, get_calendar_data
+from service.plans import get_plans, get_stats, get_calendar_data, get_target_date
 from service.resourcs import get_resources
-from service.category import get_category
-from extensions import db
+from service.category import get_category, get_categories, get_tags
+from infra import db
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -20,26 +20,34 @@ def create_app():
 
 app = create_app()
 
-# ... 其他路由保持不变 ...
+@app.context_processor
+def inject_global_data():
+    # 获取需要全局使用的数据（如分类、标签等）
+    return {
+        'global_categories': get_categories(),
+        'global_tags': get_tags()
+    }
+
 @app.route('/')
 def index():
-    return render_template('index.html', posts=get_info())
+    return render_template('index.html', 
+                           categories=get_categories(),
+                           posts=get_info())
 
 @app.route('/post/<category>/<slug>')
 def show_post(category, slug):
-    content = get_content(category, slug)
-    return render_template('post.html', content=content, title=slug) if content else abort(404)
+    title, content = get_content(category, slug)
+    return render_template('post.html', 
+                           content=content, 
+                           title=title 
+                           if content else abort(404))
 
 @app.route('/category/<category>')
 def category(category):
-    posts=get_info(category)
-    category=get_category(category)
-    if category is None:
-        print("122222")
-        abort(404)
     return render_template('category.html', 
-                         posts=posts,
-                         category=category)
+                           posts=get_info(category), 
+                           category=get_category(category) 
+                           if category else abort(404))
 
 @app.route('/think')
 def think():
@@ -47,50 +55,33 @@ def think():
 
 @app.route('/plan')
 def plan():
-    # 初始化日期处理
-    current_date = datetime.now()    
-    try:
-        # 优先级1：处理date查询参数
-        if 'date' in request.args:
-            date_str = request.args.get('date')
-            current_date = datetime.strptime(date_str, '%Y-%m-%d')
-            # 当存在date参数时，强制覆盖year/month参数
-            year = current_date.year
-            month = current_date.month
-        else:
-            # 优先级2：处理独立的year/month参数
-            year = request.args.get('year', type=int, default=current_date.year)
-            month = request.args.get('month', type=int, default=current_date.month)           
-            # 处理月份溢出逻辑
-            if month > 12:
-                year += 1
-                month = 1
-            elif month < 1:
-                year -= 1
-                month = 12
-            # 生成当前月份第一天作为参考日期
-            current_date = datetime(year, month, 1)
-    except ValueError as e:
-        abort(400, description=f"Invalid date format: {str(e)}")
-    # 获取准确的目标日期（处理可能存在的day参数）
-    try:
-        day = request.args.get('day', type=int, default=current_date.day)
-        target_date = datetime(year, month, day).date()
-    except ValueError:
-        target_date = current_date.date()
-    # 生成日历数据
-    calendar_data = get_calendar_data(year, month)
-    # 获取计划数据
-    today_plans = get_plans(target_date)
-    # 统一模板渲染
+    date_str = request.args.get('date') if 'date' in request.args else None
+    # 初始化日期参数处理
+    target_date = get_target_date(date_str)
+    if not target_date:
+        abort(400)
     return render_template('plan.html',
-        year=year,
-        month=month,
+        year=target_date.year,
+        month=target_date.month,
         current_date=target_date,
-        calendar=calendar_data,
-        today_plans=today_plans,
-        stats=get_stats(),
+        calendar=get_calendar_data(target_date.year, target_date.month), # 获取日历数据
+        today_plans=get_plans(target_date), # 获取计划数据
+        stats = get_stats()
     )
+
+@app.route('/filter')
+def filter_posts():
+    # 获取基础参数
+    search_query = request.args.get('search', '')
+    # 扩展参数示例（后续可在此添加其他参数）
+    category = request.args.get('category', '')
+    tags = request.args.getlist('tag')
+    year = request.args.get('year', '')
+    month = request.args.get('month', '')
+    day = request.args.get('day', '')
+    # 过滤文章
+    posts=get_info(category=category, search=search_query)
+    return render_template('index.html', posts=posts)
 
 @app.route('/book')
 def book():
@@ -110,6 +101,10 @@ def resource():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
+@app.errorhandler(400)
+def page_not_found(e):
+    return render_template('400.html'), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

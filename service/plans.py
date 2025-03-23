@@ -2,6 +2,14 @@ from models import Plan
 from datetime import datetime, timedelta
 import calendar as cal
 
+def get_target_date(date_str):
+    try:
+        current_date = datetime.strptime(date_str, '%Y-%m-%d') if date_str else datetime.now()
+    except ValueError as e:
+        print(f"Invalid date format: {str(e)}")
+        return None
+    return current_date.date()
+
 def get_plans(date):
     return Plan.query.filter_by(plan_date=date).all()
 

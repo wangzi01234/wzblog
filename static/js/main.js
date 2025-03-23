@@ -122,12 +122,40 @@ class DateSearchController extends BaseController {
   }
 }
 
+// ==================== 导航搜索控制器 ====================
+class NavSearchController extends BaseController {
+  init() {
+    this.searchButton = document.getElementById('nav-search-btn');
+    console.log(this.searchButton)
+    this.searchInput = document.getElementById('nav-search-input');
+    if (this.searchButton) {
+      this.bindEvents();
+    }
+  }
+  bindEvents() {
+    this.searchButton.addEventListener('click', e => this.handleSearch(e));
+    this.searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleSearch();
+    });
+  }
+
+  handleSearch(e) {
+    e.preventDefault();
+    // 获取输入内容并编码
+    const searchTerm = encodeURIComponent(this.searchInput.value);
+    // 基础 URL
+    let url = '/filter?search=' + searchTerm;
+    window.location.href = url;
+  }
+}
+
 // ==================== 初始化执行 ====================
 const initializeControllers = () => {
   try {
     new NavController();
     new FilterController();
-    new DateSearchController(); // 新增控制器
+    new DateSearchController();
+    new NavSearchController();
   } catch (error) {
     console.error('Controller initialization failed:', error);
   }

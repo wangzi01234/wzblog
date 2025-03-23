@@ -1,4 +1,4 @@
-from models.resource import Resource
+from models import Resource
 
 def get_resources():
     # 从数据库中检索所有未删除的资源

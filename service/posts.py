@@ -1,12 +1,10 @@
+import yaml
 from markdown import markdown
-import os
-import yaml  # 需要安装 pyyaml
-from service.minio import minio_client
-from sqlalchemy import desc, or_
+from infra import minio_client
 from datetime import datetime
-from models.article import Article
-from sqlalchemy import desc
-from sqlalchemy.exc import SQLAlchemyError  # 更精确的异常捕获
+from models import Article, ArticleTag, Tag
+from sqlalchemy import desc, func, or_
+from sqlalchemy.exc import SQLAlchemyError
 
 def parse_markdown(content):
     """解析带 YAML Front Matter 的 Markdown 文件"""
@@ -20,46 +18,59 @@ def parse_markdown(content):
     return metadata, body
 
 def get_content(category, slug):
+    path = '/articles/' + category + '/' + slug + '.md'
     try:
-        path = category + '/' + slug + '.md'
         content = minio_client.get_object(path)
         metadata, result = parse_markdown(content)
+        title = metadata.get('title', '')
     except Exception as e:
-        app.logger.error(f"解析文件失败: {slug+'.md'}, 错误: {str(e)}")
-    return result
+        return None, None
+    return title, result
 
-def get_info(category=None):
+def get_info(category=None, search=None):
     """从数据库获取分类文章的优化方法"""
     try:
-        # 初始化基础查询
         query = Article.query
-        
-        # 添加分类过滤条件
-        if category is not None:
-            query = query.filter(Article.category == category)
-        
-        # 构建排序规则（优先日期倒序，其次标题正序）
-        query = query.order_by(
-            desc(Article.date),
-            Article.title.asc()
+        # 统一构建基础查询
+        posts_query = (
+            query
+            .outerjoin(ArticleTag, Article.id == ArticleTag.article_id)
+            .outerjoin(Tag, ArticleTag.tag_id == Tag.id)
+            .filter(Article.deleted_at.is_(None))
         )
-
-        # 执行查询并转换数据结构
+        # 动态添加搜索条件
+        if search:
+            posts_query = posts_query.filter(
+                or_(
+                    Article.title.ilike(f"%{search}%"),
+                    Tag.name.ilike(f"%{search}%")
+                )
+            )
+        # 继续构建完整查询
+        posts_query = posts_query.with_entities(
+            Article.id,
+            Article.title,
+            Article.date,
+            Article.excerpt,
+            Article.category,
+            Article.path,
+            func.group_concat(Tag.name).label('tags')
+        ).group_by(Article.id).order_by(desc(Article.date), Article.title.asc())
+        
+        # 转换为结构化数据（避免N+1查询问题）
         posts = [
             {
+                'id': art.id,
                 'title': art.title,
                 'date': art.date,
                 'excerpt': art.excerpt or '',
                 'category': art.category if art.category else 'post',
-                'slug' : art.path.split('/')[-1].split('.md')[0],
-                # 'slug' : art.path.split('.md')[0].lower().replace(' ', '-'),
-                'path' : art.path,
-                'tags': art.tags or []
-                # 如果需要其他字段可在此扩展
+                'slug': art.path.split('/')[-1].split('.md')[0],
+                'path': art.path,
+                'tags': art.tags.split(',') if art.tags else []
             }
-            for art in query.all()
+            for art in posts_query.all()
         ]
-
         # 双保险排序（处理数据库未正确排序的情况）
         return sorted(
             posts,

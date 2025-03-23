@@ -4,9 +4,9 @@
 
 ## 🏗️ 技术栈版本与选型依据
 
-[![Python 3.8.8](https://img.shields.io/badge/Python-3.8.8-3776AB?logo=python&logoColor=white)](https://www.python.org/)[![Flask 3.0.3](https://img.shields.io/badge/Flask-3.0.3-000000?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)[![MinIO RELEASE.2025-02-18T16-25-55Z](https://img.shields.io/badge/MinIO-RELEASE.2025--02--18T16--25--55Z-7D42AE?logo=minio&logoColor=white)](https://min.io/)[![Docker 26.1.3](https://img.shields.io/badge/Docker-26.1.3-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)[![MySQL 8.3.0](https://img.shields.io/badge/MySQL-8.3.0-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)[![Nginx 1.14.1](https://img.shields.io/badge/Nginx-1.14.1-009639?logo=nginx&logoColor=white)](https://nginx.org/)
+[![Python 3.8.8](https://img.shields.io/badge/Python-3.8.8-3776AB?logo=python&logoColor=white)](https://www.python.org/)  [![Flask 3.0.3](https://img.shields.io/badge/Flask-3.0.3-000000?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)  [![MinIO RELEASE.2025-02-18T16-25-55Z](https://img.shields.io/badge/MinIO-RELEASE.2025--02--18T16--25--55Z-7D42AE?logo=minio&logoColor=white)](https://min.io/)  [![Docker 26.1.3](https://img.shields.io/badge/Docker-26.1.3-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)  [![MySQL 8.3.0](https://img.shields.io/badge/MySQL-8.3.0-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)  [![Nginx 1.14.1](https://img.shields.io/badge/Nginx-1.14.1-009639?logo=nginx&logoColor=white)](https://nginx.org/)
 
-**线上演示**：http://120.46.79.73:20250/
+**线上演示**：https://www.wzportia.tech/
 
 
 

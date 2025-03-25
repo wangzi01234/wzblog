@@ -1,0 +1,36 @@
+{# components/post_list.html #}
+
+{% macro post_list(posts, category) %}
+    {% if category %}
+        <header class="category-header">
+            <h1>{{ category.name }}</h1>
+            <p class="category-description">{{ category.description }}</p>
+        </header>
+    {% endif %}
+    <div class="post-list">
+    {% for post in posts %}
+        <div class="post-item">
+            <h2 class="post-title">
+                <a href="{{ url_for('show_post', category=post.category, slug=post.slug) }}">
+                    {{ post.title }}
+                </a>
+            </h2>            
+            {% if post.excerpt %}
+                <div class="post-detail">
+                    {{ post.excerpt }}
+                </div>
+            {% endif %}
+            <div class="post-meta">
+                <time class="post-date">{{ post.date }}</time>
+                {% if post.tags %}
+                <div class="tag-container">
+                    {% for tag_name, tag_slug in post.tags.items() %}
+                        <a href="/tag/{{ tag_slug }}" class="tag-pill">#&nbsp;{{ tag_name }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endmacro %}

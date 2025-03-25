@@ -2,7 +2,7 @@
 
 {% block content %}
 <header class="category-header">
-    <h2>{{ category_name }}</h2>
+    <h1>{{ category_name }}</h1>
     <p class="category-description">{{ category_desc }}</p>
 </header>
 
@@ -31,7 +31,7 @@
     </div>
 
     <!-- 标签云 -->
-    <div class="tag-cloud">
+    <div class="tag-container">
         <a href="#" class="tag-pill active">Python</a>
         <a href="#" class="tag-pill">机器学习</a>
         <a href="#" class="tag-pill">前端</a>
@@ -44,21 +44,21 @@
         <button class="search-button">🔍</button>
     </div>
 </div>
-<div class="resource-list">
+<div class="post-list">
     {% for resource in resources %}
-    <article class="resource-item">
+    <div class="post-item">
       <!-- 第一行：名称 -->
-      <div class="resource-name">{{ resource.name }}</div>
+      <div class="post-title">{{ resource.name }}</div>
       
       <!-- 第二行：链接 -->
-      <a href="{{ resource.link }}" class="resource-link" target="_blank">{{ resource.link }}</a>
+      <a href="{{ resource.link }}" class="post-link" target="_blank">{{ resource.link }}</a>
       
       <!-- 第三行：详情 -->
-      <div class="resource-detail">{{ resource.detail }}</div>
+      <div class="post-detail">{{ resource.detail }}</div>
       
       <!-- 第四行：标签/作者/来源 -->
       <div class="resource-footer">
-        <div class="resource-tags">
+        <div class="tag-container">
           {% for tag in resource.tags %}
           <span class="resource-tag">#{{ tag }}</span>
           {% endfor %}
@@ -68,7 +68,7 @@
           <span class="resource-source">{{ resource.source }}</span>
         </div>
       </div>
-    </article>
+    </div>
     {% endfor %}
   </div>
 {% endblock %}

@@ -1,10 +1,22 @@
 import yaml
+import json
 from markdown import markdown
 from infra import minio_client
 from datetime import datetime
 from models import Article, ArticleTag, Tag
 from sqlalchemy import desc, func, or_
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import TypeDecorator, Text
+
+class JSONDict(TypeDecorator):
+    """自定义JSON字典类型处理器"""
+    impl = Text
+    def process_result_value(self, value, dialect):
+        try:
+            return json.loads(value) if value else {}
+        except (TypeError, json.JSONDecodeError):
+            return {}
+        
 
 def parse_markdown(content):
     """解析带 YAML Front Matter 的 Markdown 文件"""
@@ -27,7 +39,7 @@ def get_content(category, slug):
         return None, None
     return title, result
 
-def get_info(category=None, search=None):
+def get_info(category=None, tag=None, search=None):
     """从数据库获取分类文章的优化方法"""
     try:
         query = Article.query
@@ -38,6 +50,17 @@ def get_info(category=None, search=None):
             .outerjoin(Tag, ArticleTag.tag_id == Tag.id)
             .filter(Article.deleted_at.is_(None))
         )
+        if tag:
+            # 创建子查询：获取包含该标签的文章ID
+            subquery = (
+                ArticleTag.query
+                .join(Tag, ArticleTag.tag_id == Tag.id)
+                .filter(Tag.slug == tag)
+                .with_entities(ArticleTag.article_id)
+                .distinct()
+            )
+            # 主查询中过滤出这些文章
+            posts_query = posts_query.filter(Article.id.in_(subquery))
         # 动态添加搜索条件
         if search:
             posts_query = posts_query.filter(
@@ -59,7 +82,7 @@ def get_info(category=None, search=None):
             Article.excerpt,
             Article.category,
             Article.path,
-            func.group_concat(Tag.name).label('tags')
+            func.JSON_OBJECTAGG(Tag.name, Tag.slug).cast(JSONDict).label('tags')
         ).group_by(Article.id).order_by(desc(Article.date), Article.title.asc())
         print(posts_query)
         # 转换为结构化数据（避免N+1查询问题）
@@ -72,7 +95,7 @@ def get_info(category=None, search=None):
                 'category': art.category if art.category else 'post',
                 'slug': art.path.split('/')[-1].split('.md')[0],
                 'path': art.path,
-                'tags': art.tags.split(',') if art.tags else []
+                'tags': art.tags or None
             }
             for art in posts_query.all()
         ]

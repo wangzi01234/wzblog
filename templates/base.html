@@ -6,7 +6,8 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/posts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/article.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/filter.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plan.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/resource.css') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
@@ -24,7 +25,7 @@
 <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/calendar.js') }}" defer></script>
 <body>
-    <header>
+    <header class="brand-header">
         <a href="/" class="brand">WANGZI</a>
         <div>
             <span>&#128293;</span>Courage&nbsp;&nbsp;

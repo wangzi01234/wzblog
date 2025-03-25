@@ -1,34 +1,7 @@
 {% extends "base.html" %}
 
-{% block content %}
-<header class="category-header">
-    <h2>{{ category.name }}</h2>
-    <p class="category-description">{{ category.description }}</p>
-</header>
+{% from "components/info.html" import post_list %}
 
-<div class="post-list">
-    <!-- 统一文章展示组件 -->
-    <div class="posts-container {{ 'featured-mode' if featured_mode else 'normal-mode' }}">
-        {% for post in posts %}
-        <article class="post-preview {% if post.featured %}featured-post{% endif %}">
-            <h2 class="post-title">
-                <a href="{{ url_for('show_post', category = post.category, slug = post.slug) }}">{{ post.title }}</a>
-            </h2>
-            
-            {% if post.excerpt %}
-            <div class="post-content-excerpt">
-                {{ post.excerpt|truncate(150) }}
-            </div>
-            {% endif %}
-            
-            <div class="post-meta">
-                {% if post.author %}
-                <span class="post-author">{{ post.author }}</span>
-                {% endif %}
-                <time class="post-date">{{ post.date }}</time>
-            </div>
-        </article>
-        {% endfor %}
-    </div>
-</div>
+{% block content %}
+    {{ post_list(posts = posts, category = category) }}
 {% endblock %}

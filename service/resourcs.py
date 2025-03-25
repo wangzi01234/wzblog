@@ -12,7 +12,8 @@ def get_resources():
             "link": resource.link or "#",
             "source": resource.source or "",
             "author": resource.author or "",
-            "tags": [tag.name for tag in resource.tags]  # 从关联表中获取标签名称
+            "tags": [tag.name for tag in resource.tags],  # 从关联表中获取标签名称
+            "detail": resource.detail or ""
         }
         formatted_resources.append(formatted_resource)
     

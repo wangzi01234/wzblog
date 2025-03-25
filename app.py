@@ -30,6 +30,8 @@ def inject_global_data():
 
 @app.route('/')
 def index():
+    posts=get_info()
+    print(posts[0])
     return render_template('index.html', 
                            categories=get_categories(),
                            posts=get_info())
@@ -46,6 +48,13 @@ def show_post(category, slug):
 def category(category):
     return render_template('category.html', 
                            posts=get_info(category=category), 
+                           category=get_category(category) 
+                           if category else abort(404))
+
+@app.route('/tag/<tag>')
+def tag(tag):
+    return render_template('category.html', 
+                           posts=get_info(tag=tag), 
                            category=get_category(category) 
                            if category else abort(404))
 

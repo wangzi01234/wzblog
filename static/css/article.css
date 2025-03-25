@@ -1,0 +1,123 @@
+article a{
+    text-decoration: underline;
+}
+
+.article-container{
+    padding: 0.8rem;
+}
+
+.article-title{
+    padding-left: 0;
+}
+
+/* 基础表格样式 */
+.article-content table {
+    width: 100%;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+  
+/* 表头样式 */
+.article-content table thead th {
+    padding: 0.75rem;
+    text-align: left;
+    background-color: #f0f4f8;
+}
+  
+/* 表格单元格 */
+.article-content table td {
+    padding: 0.6rem;
+    border-top: 1px solid #dae2ec;
+}
+  
+/* 斑马纹交替行 */
+.article-content tbody tr:nth-child(even) {
+    background-color: #f8fafb;
+}
+  
+/* 悬停效果 */
+.article-content table tbody tr:hover {
+    background-color: #e6f0f7;
+}
+
+.post-list {
+    display: grid;
+    gap: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0.3rem;
+}
+
+.post-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.post-item {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+/* 基础样式 - 通过颜色和间距暗示可点击性 */
+.post-title a {
+    color: var(--link-color, #174a7d);       /* 主链接色 */
+    display: inline-block;                   /* 确保缩放容器 */
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;                      /* 为高亮效果准备 */
+}
+/* 悬停动态效果 */
+.post-title a:hover {
+    color: var(--link-hover, #1c5bb8);       /* 颜色加深 */
+    transform: translateY(-2px) scale(1.05); /* 上浮+放大 */
+    text-shadow: 0 3px 8px rgba(44, 123, 229, 0.2); /* 发光效果 */
+}
+  
+/* 点击脉冲动画 */
+.post-title a:active {
+    animation: linkPulse 0.3s ease;
+}
+  
+/* 脉冲动画关键帧 */
+@keyframes linkPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.96); }
+    100% { transform: scale(1); }
+}
+
+/* 链接样式 */
+.post-link {
+    display: block;
+    font-size: 0.9rem;
+    color: #3498db;
+    margin-bottom: 0.75rem;
+    word-break: break-all;
+}
+
+.post-link:hover {
+    text-decoration: underline;
+}
+
+/* 详情描述 */
+.post-detail {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9em;
+    color: #888;
+}
+
+.post-date {
+    white-space: nowrap;
+}

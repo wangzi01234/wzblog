@@ -1,17 +1,17 @@
 {# components/post_list.html #}
 
-{% macro post_list(posts, category) %}
-    {% if category %}
-        <header class="category-header">
-            <h1>{{ category.name }}</h1>
-            <p class="category-description">{{ category.description }}</p>
-        </header>
+{% macro post_list(posts, pagination, posts_title) %}
+    {% if posts_title %}
+    <header class="title-header">
+        <h1>{{ posts_title.name }}</h1>
+        <p class="title-description">{{ posts_title.description }}</p>
+    </header>
     {% endif %}
     <div class="post-list">
     {% for post in posts %}
         <div class="post-item">
             <h2 class="post-title">
-                <a href="{{ url_for('show_post', category=post.category, slug=post.slug) }}">
+                <a href="{{ url_for('/.show_post', category=post.category, slug=post.slug) }}">
                     {{ post.title }}
                 </a>
             </h2>            
@@ -32,5 +32,44 @@
             </div>
         </div>
     {% endfor %}
+    </div>
+
+    {# 改进后的分页组件 #}
+    <div class="pagination">
+      {% if pagination.pages > 1 %}
+        <div class="pagination-inner">
+          {% if pagination.has_prev %}
+            <a href="{{ url_for('/.index', page=pagination.prev_num) }}" 
+               class="page-arrow">«</a>
+          {% endif %}
+    
+          {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
+            {% if page_num %}
+              <a href="{{ url_for('/.index', page=page_num) }}"
+                 class="page-link {% if page_num == pagination.page %}active{% endif %}">
+                {{ page_num }}
+              </a>
+            {% else %}
+              <span class="page-ellipsis">...</span>
+            {% endif %}
+          {% endfor %}
+    
+          {% if pagination.has_next %}
+            <a href="{{ url_for('/.index', page=pagination.next_num) }}" 
+               class="page-arrow">»</a>
+          {% endif %}
+        </div>
+        
+        <div class="pagination-stats">
+          当前 {{ pagination.page }}/{{ pagination.pages }} 页
+          （共 {{ pagination.total }} 篇文章）
+        </div>
+      {% endif %}
+    </div>
+
+    {# 移动端加载控件 #}
+    <div class="load-more">
+        <button id="load-more">加载更多</button>
+        <div id="loading" style="display:none;">加载中...</div>
     </div>
 {% endmacro %}

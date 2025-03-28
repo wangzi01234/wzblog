@@ -143,7 +143,7 @@ class NavSearchController extends BaseController {
     // 获取输入内容并编码
     const searchTerm = encodeURIComponent(this.searchInput.value);
     // 基础 URL
-    let url = '/filter?search=' + searchTerm;
+    let url = '/search?search=' + searchTerm;
     window.location.href = url;
   }
 }

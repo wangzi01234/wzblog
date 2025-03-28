@@ -198,8 +198,30 @@
     width: 110px;
   }
 
-  .category-header {
+  .title-header {
     padding: 0;
     padding-bottom: 0.5rem;
+  }
+}
+
+.github-icon {
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.github-icon:hover {
+  color: var(--primary-color);
+  transform: rotate(360deg) scale(1.1);
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .github-icon {
+      width: 20px;
+      height: 20px;
+  }
+  
+  .motto-container {
+      font-size: 0.9rem;
   }
 }

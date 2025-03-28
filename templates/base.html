@@ -19,106 +19,20 @@
       year: {{ year }},
       month: {{ month }},
       current_date: {{ current_date }},
-      planUrl: {{ url_for('plan', date='DATE')|tojson }}
+      planUrl: {{ url_for('/.plan', date='DATE')|tojson }}
     };
 </script>
 <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/nav.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/calendar.js') }}" defer></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
 <body>
-    <header class="brand-header">
-        <a href="/" class="brand">WANGZI</a>
-        <div>
-            <span>&#128293;</span>Courage&nbsp;&nbsp;
-            <span>&#9854;&#65039;</span>Perseverance&nbsp;
-            <span>&#128161;</span>Creativity
-        </div>
-    </header>
-    <nav class="responsive-nav">
-        <div class="nav-search">
-            <input type="text" placeholder="搜索..." class="search-input" id="nav-search-input">
-            <button class="search-button" id="nav-search-btn">🔍</button>
-        </div>
-        <!-- 修改后的筛选面板结构 -->
-        <div class="nav-filter">
-            <button class="filter-button">筛选 ▼</button>
-        </div>
-        <div class="filter-dropdown">
-            <!-- 分类筛选 - 横向布局 -->
-            <div class="filter-section">
-                <h4 class="filter-title">分类</h4>
-                <div class="horizontal-list">
-                {% for category in global_categories %}
-                    <a href="/category/{{ category.slug }}" class="tag-pill filter-pill">{{ category.name }}</a>
-                {% endfor %}
-                </div>
-            </div>
-
-            <!-- 标签筛选 - 横向滚动 -->
-            <div class="filter-section">
-                <h4 class="filter-title">标签</h4>
-                <div class="scrollable-tags">
-                    <div class="tag-container">
-                        {% for tag in global_tags %}
-                        <a href="/tag/{{ tag.slug }}" class="tag-pill filter-tag">{{ tag.name }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- 日期筛选 - 下拉选择 -->
-            <div class="filter-section">
-                <h4 class="filter-title">日期</h4>
-                <div class="date-selectors">
-                    <!-- 年选择组 -->
-                    <div class="date-selector-group" data-unit="年">
-                      <select class="year-select">
-                        <option>2025</option>
-                        <option>2024</option>
-                      </select>
-                    </div>
-                    
-                    <!-- 月选择组 -->
-                    <div class="date-selector-group" data-unit="月">
-                      <select class="month-select">
-                        <option>03</option>
-                        <option>02</option>
-                      </select>
-                    </div>
-                    
-                    <!-- 日选择组 -->
-                    <div class="date-selector-group" data-unit="日">
-                      <select class="day-select">
-                        <option>15</option>
-                        <option>14</option>
-                      </select>
-                    </div>
-                </div>
-            </div>
-            <div class="filter-operation">
-                <button class="filter-search-button" id="filter-clear">清空</button>
-                <button class="filter-search-button" id="filter-search">查询</button>
-            </div>
-        </div>
-        <button class="nav-toggle">☰</button>
-        <div class="nav-menu">
-            <a href="/">首页</a>
-            <a href="/category/tech">技术</a>
-            <a href="/category/lang">语言</a>
-            <!-- <a href="/think">感想</a> -->
-            <a href="/plan">计划</a>
-            <a href="/book">书架</a>
-            <a href="/resource">资料</a>
-            <a href="/about">关于</a>
-        </div>
-    </nav>
+    {% include 'components/header.html' %}
+    {% include 'components/nav.html' %}
     <main>
         {% block content %}{% endblock %}
     </main>
-    <footer>
-        <p>© 2025 wangzi</p>
-    </footer>
+    {% include 'components/footer.html' %}
 </body>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
-<script>hljs.highlightAll();</script>
 </html>

@@ -121,3 +121,74 @@ article a{
 .post-date {
     white-space: nowrap;
 }
+
+/* 分页样式 */
+.pagination {
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.page-item {
+    display: inline-block;
+}
+
+.page-link {
+    padding: 8px 16px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.page-link:hover {
+    background: #f8f9fa;
+}
+
+.page-link.active {
+    background: #1677ff;
+    color: white;
+    border-color: transparent;
+}
+
+/* 移动端加载更多 */
+.load-more {
+    text-align: center;
+    margin: 2rem 0;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .pagination { display: none; }
+    .load-more { display: block; }
+}
+
+/* 返回顶部按钮 */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 40px;
+    height: 40px;
+    background: rgba(22, 119, 255, 0.8);
+    border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: all 0.3s;
+}
+
+.back-to-top:hover {
+    background: #1677ff;
+    transform: translateY(-2px);
+}
+
+.back-to-top::after {
+    content: "↑";
+    color: white;
+    font-size: 1.2rem;
+}

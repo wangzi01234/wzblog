@@ -3,5 +3,5 @@
 {% from "components/info.html" import post_list %}
 
 {% block content %}
-    {{ post_list(posts = posts, category = category) }}
+    {{ post_list(posts = posts, pagination = pagination, posts_title = posts_title) }}
 {% endblock %}

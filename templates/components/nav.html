@@ -1,0 +1,93 @@
+<!-- components/nav.html -->
+<nav class="responsive-nav">
+    <div class="nav-search">
+        <input type="text" placeholder="搜索..." class="search-input" id="nav-search-input">
+        <button class="search-button" id="nav-search-btn">🔍</button>
+    </div>
+    <div class="nav-filter">
+        <button class="filter-button">筛选 ▼</button>
+    </div>
+    <div class="filter-dropdown">
+        {# 分类部分 #}
+        <div class="filter-section">
+            <h4 class="filter-title">分类</h4>
+            <div class="horizontal-list">
+                {% for category in global_categories %}
+                <a href="javascript:;" 
+                   class="tag-pill filter-pill" 
+                   data-type="category" 
+                   data-value="{{ category.slug }}">{{ category.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    
+        {# 标签部分 #}
+        <div class="filter-section">
+            <h4 class="filter-title">标签</h4>
+            <div class="scrollable-tags">
+                <div class="tag-container">
+                    {% for tag in global_tags %}
+                    <a href="javascript:;" 
+                       class="tag-pill filter-tag" 
+                       data-type="tag" 
+                       data-value="{{ tag.slug }}">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+  
+        <div class="filter-section">
+            <h4 class="filter-title">日期</h4>
+            <div class="date-selectors">
+                {% for prefix in ['start', 'end'] %}
+                <div class="date-range-section">
+                    <!-- 年份选择 -->
+                    <div class="date-selector-group" data-unit="年">
+                        <select class="year-select" id="filter-year-{{ prefix }}">
+                            {% for year in range(2024, 2027) %}
+                            <option value="{{ year }}" {{ 'selected' if (loop.first and prefix=='start') or (loop.last and prefix=='end') }}>{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- 月份选择 -->
+                    <div class="date-selector-group" data-unit="月">
+                        <select class="month-select" id="filter-month-{{ prefix }}">
+                            {% for month in range(1, 13) %}
+                            <option value="{{ "%02d" % month }}" {{ 'selected' if (month==1 and prefix=='start') or (month==12 and prefix=='end') }}>{{ "%02d" % month }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- 日期选择 -->
+                    <div class="date-selector-group" data-unit="日">
+                        <select class="day-select" id="filter-day-{{ prefix }}">
+                            {% for day in range(1, 32) %}
+                            <option value="{{ "%02d" % day }}" {{ 'selected' if (day==1 and prefix=='start') or (day==31 and prefix=='end') }}>{{ "%02d" % day }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                {# 添加间隔线 #}
+                {% if not loop.last %}
+                <div class="date-range-divider"></div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="filter-operation">
+            <button class="filter-search-button" id="filter-clear">清空</button>
+            <button class="filter-search-button" id="filter-search">查询</button>
+        </div>
+    </div>
+    <button class="nav-toggle">☰</button>
+    <div class="nav-menu">
+        <a href="/">首页</a>
+        <a href="/category/tech">技术</a>
+        <a href="/category/lang">语言</a>
+        <a href="/plan">计划</a>
+        <a href="/book">书架</a>
+        <a href="/resource">资料</a>
+        <a href="/about">关于</a>
+    </div>
+</nav>

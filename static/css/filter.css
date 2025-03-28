@@ -21,7 +21,7 @@
 }
 
 /* 激活状态 */
-.tag-pill.active {
+.tag-pill.selected {
     background: linear-gradient(135deg, #1677ff, #4096ff);
     color: white;
     border-color: transparent;
@@ -29,6 +29,11 @@
         0 4px 12px rgba(22, 119, 255, 0.2),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
+/* 选中状态样式 */
+/* .tag-pill.selected {
+  background: #007bff;
+  color: white;
+} */
 
 /* 禁用状态 */
 .tag-pill:disabled {
@@ -162,14 +167,6 @@
     border-color: #0062cc;   /* 同步加深 */
   }
   
-  /* 日期选择 */
-  .date-selectors select {
-    padding: 4px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: white;
-  }
-  
   /* 移动端适配 */
   @media (max-width: 480px) {
     .filter-button {
@@ -182,88 +179,114 @@
   }
   }
 
-  /* 日期选择容器 */
+
+/* 日期选择容器 */
 .date-selectors {
+  display: flex;
+  gap: 20px;
+  position: relative;
+}
+
+/* 日期选择 */
+.date-selectors select {
+  background: white;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: #f97316;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.3, 0, 0.2, 1);
+  appearance: none;
+}
+  
+/* 悬停状态 */
+.date-selectors select:hover {
+  border-color: #f97316;
+  box-shadow: 0 2px 6px rgba(249, 115, 22, 0.1);
+}
+
+/* 聚焦状态 */
+.date-selectors select:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2),
+              0 4px 12px rgba(249, 115, 22, 0.1);
+}
+
+/* 开始/结束日期区块 */
+.date-range-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* 日期选择器组 */
+.date-selector-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.date-selector-group::after {
+  content: attr(data-unit);
+  color: #64748b;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  margin-left: 4px;
+}
+
+/* 下拉菜单样式 */
+.date-selector-group select {
+  padding: 6px 25px 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* 新增间隔线样式 */
+.date-range-divider {
+  background: #ddd;
+  margin: 0 15px;
+  position: relative;
+}
+
+/* 可选：添加文字提示 */
+.date-range-divider::after {
+  content: '至';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 0 5px;
+  color: #999;
+  font-size: 12px;
+}
+
+/* 响应式优化 - 移动端 */
+@media (max-width: 768px) {
+  .date-selectors {
+    flex-direction: column;
+    gap: 12px;
+    padding: 0;
+  }
+
+  /* 创建选择框组 */
+  .date-selector-group {
     display: flex;
     align-items: center;
-    gap: 8px;
-    border-radius: 12px;
-    padding: 12px;
+    gap: 0;
+    width: 100%;
   }
-  
-  /* 下拉选择框统一样式 */
+
+  /* 调整选择框宽度 */
   .date-selectors select {
-    padding: 8px 16px;
-    border: 1px solid rgba(249, 115, 22, 0.3);
-    color: #f97316; /* 主橙色 */
-    /* background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg...'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e"); */
-    border-radius: 8px;
-    background: white;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.3, 0, 0.2, 1);
-    appearance: none; /* 移除原生样式 */
-    background-repeat: no-repeat;
+    flex: 1;
+    min-width: unset;
+    width: calc(100% - 48px); /* 留出单位空间 */
     background-position: right 12px center;
-    background-size: 16px;
-    padding-right: 40px;
+    padding: 6px 12px;
   }
-  
-  /* 悬停状态 */
-  .date-selectors select:hover {
-    border-color: #f97316;
-    box-shadow: 0 2px 6px rgba(249, 115, 22, 0.1);
+
+  .date-range-divider::after {
+    display: none;
   }
-  
-  /* 聚焦状态 */
-  .date-selectors select:focus {
-    outline: none;
-    border-color: #f97316;
-    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2),
-                0 4px 12px rgba(249, 115, 22, 0.1);
-  }
-  
-  .date-selector-group::after {
-    content: attr(data-unit);
-    color: #64748b;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-  
-  /* 响应式优化 - 移动端 */
-  @media (max-width: 768px) {
-    .date-selectors {
-      flex-direction: column;
-      gap: 12px;
-    }
-  
-    /* 创建选择框组 */
-    .date-selector-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
-    }
-  
-    /* 隐藏全局单位文字 */
-    .date-selectors > span {
-      display: none;
-    }
-  
-    /* 为每个选项添加单位 */
-    .date-selector-group::after {
-      content: attr(data-unit);
-      color: #64748b;
-      font-size: 0.9rem;
-      white-space: nowrap;
-    }
-  
-    /* 调整选择框宽度 */
-    .date-selectors select {
-      flex: 1;
-      min-width: unset;
-      width: calc(100% - 48px); /* 留出单位空间 */
-      background-position: right 12px center;
-      padding: 6px 12px;
-    }
-  }
+}

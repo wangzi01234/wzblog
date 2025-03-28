@@ -3,8 +3,5 @@
 {% from "components/info.html" import post_list %}
 
 {% block content %}
-    <header class="category-header">
-        <h1>最新文章</h1>
-    </header>
-    {{ post_list(posts=posts) }}
+    {{ post_list(posts=posts, pagination=pagination, title=title) }}
 {% endblock %}

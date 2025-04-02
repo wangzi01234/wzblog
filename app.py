@@ -61,6 +61,7 @@ def register_blueprints(app):
     from router.router import bp as router_bp
     app.register_blueprint(router_bp)
 
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     app.run(debug=True)

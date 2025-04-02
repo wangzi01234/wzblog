@@ -31,7 +31,7 @@ def category(category):
     posts_data = get_info(page=page, per_page=per_page, category=category)
     posts_title=get_category(category)
     return render_template('posts.html', posts=posts_data['items'], pagination=posts_data['pagination'],
-                         posts_title=posts_title, title = "WANGZI - {}".format(posts_title['name'])) if category else abort(404)
+                         posts_title=posts_title, title = "WANGZI - {}".format(posts_title['name'])) if posts_title else abort(404)
 
 @bp.route('/tag/<tag>')
 def tag(tag):
@@ -40,7 +40,7 @@ def tag(tag):
     posts_data = get_info(page=page, per_page=per_page, tags=[tag])
     posts_title=get_tag(tag)
     return render_template('posts.html', posts=posts_data['items'], pagination=posts_data['pagination'],
-                         posts_title=posts_title, title = "WANGZI - {}".format(posts_title['name'])) if tag else abort(404)
+                         posts_title=posts_title, title = "WANGZI - {}".format(posts_title['name'])) if posts_title else abort(404)
 
 @bp.route('/search')
 def search():

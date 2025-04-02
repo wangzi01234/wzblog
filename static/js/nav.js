@@ -162,3 +162,154 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 移动端断点设置（推荐使用 1024px 作为分界）
+  const MOBILE_BREAKPOINT = 1024 
+  let isMobileView = window.innerWidth < MOBILE_BREAKPOINT
+  
+  // 初始化检测
+  if (!isMobileView) return
+  // 元素获取
+  const pagination = document.querySelector('.pagination')
+  const loadingIndicator = document.querySelector('.loading-indicator')
+  const noMore = document.querySelector('.no-more')
+  const postList = document.querySelector('.post-list')
+
+  // 初始化分页状态
+  let currentPage = parseInt(pagination.dataset.currentPage)
+  let totalPages = parseInt(pagination.dataset.totalPages)
+  let isLoading = false
+  let hasMore = currentPage < totalPages
+
+  // 事件监听整合（包含节流）
+  function initScrollListeners() {
+    checkScroll() // 初始检查
+    window.addEventListener('scroll', throttle(checkScroll, 200))
+    window.addEventListener('resize', throttle(checkScroll, 200))
+  }
+
+    // 修改后的滚动检测逻辑
+  function checkScroll() {
+    if (!hasMore)
+      hideLoading()
+      showNoMore()
+    // 状态锁定检查
+    if (isLoading || !hasMore) return
+    // 获取精确的滚动位置
+    const { scrollTop, scrollHeight, clientHeight } = getAccurateScrollPosition()
+    
+    // 动态触发阈值（根据容器高度比例计算）
+    const triggerThreshold = clientHeight * 0.3 // 剩余30%高度时触发
+    const triggerPoint = scrollHeight - triggerThreshold
+    
+    // 双重位置验证
+    const currentPosition = scrollTop + clientHeight
+    const isValidScroll = currentPosition >= triggerPoint
+    
+    // 历史位置比对（防止快速滚动跳过检测点）
+    const prevPosition = window._lastScrollPosition || 0
+    window._lastScrollPosition = currentPosition
+    
+    if (isValidScroll || (prevPosition > triggerPoint && currentPosition > triggerPoint)) {
+        console.log("触发加载，当前位置:", currentPosition)
+        loadMore()
+    }
+  }
+
+  // 保留原有分页逻辑
+  async function loadMore() {
+    isLoading = true
+    showLoading()
+    try {
+      const nextPage = currentPage + 1
+      const url = buildPageUrl(nextPage)
+      const response = await fetch(url)
+      if (!response.ok) throw new Error(response.status)
+      const html = await response.text()
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(html, 'text/html')
+      // 更新文章列表
+      const newContent = doc.querySelector('.post-list').innerHTML
+      postList.insertAdjacentHTML('beforeend', newContent)
+      // 更新分页信息
+      const newPagination = doc.querySelector('.pagination')
+      currentPage = parseInt(newPagination.dataset.currentPage)
+      totalPages = parseInt(newPagination.dataset.totalPages)
+      hasMore = currentPage < totalPages
+      // 更新页面标题（可选）
+      if (currentPage > 1) {
+        document.title = `${document.title.split(' - ')} - 第${currentPage}页`
+      }
+    } catch (error) {
+      console.error('加载失败:', error)
+      hasMore = true // 允许重试
+    } finally {
+      isLoading = false
+      hideLoading()
+      if (!hasMore) showNoMore()
+    }
+  }
+
+  // 辅助函数保持原样
+  function buildPageUrl(page) {
+    const url = new URL(window.location.href)
+    const params = new URLSearchParams(url.search)
+    params.set('page', page)
+    return `${url.pathname}?${params}`
+  }
+
+  function showLoading() {
+    loadingIndicator.style.display = 'flex' // 修正为英文 block
+    noMore.style.display = 'none'
+  }
+
+  function hideLoading() {
+    loadingIndicator.style.display = 'none'
+  }
+
+  function showNoMore() {
+    noMore.style.display = 'flex'
+  }
+
+// 获取精确滚动位置（兼容不同浏览器）
+function getAccurateScrollPosition() {
+    return {
+      scrollTop: Math.max(
+        document.documentElement.scrollTop,
+        document.body.scrollTop
+      ),
+      scrollHeight: Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+      ),
+      clientHeight: window.innerHeight || document.documentElement.clientHeight
+    }
+  }
+  
+  // 调整节流函数（使用requestAnimationFrame优化）
+  function throttle(fn, delay) {
+    let lastCall = 0
+    let frameId = null
+    
+    return function(...args) {
+      const now = Date.now()
+      const context = this
+      
+      const execute = () => {
+        fn.apply(context, args)
+        lastCall = now
+      }
+      
+      if (now - lastCall >= delay) {
+        execute()
+      } else {
+        cancelAnimationFrame(frameId)
+        frameId = requestAnimationFrame(execute)
+      }
+    }
+  }
+
+  // 初始化
+  initScrollListeners()
+})

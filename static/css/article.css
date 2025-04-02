@@ -112,6 +112,7 @@ article a{
 
 .post-meta {
     display: flex;
+    flex-wrap:wrap;
     align-items: center;
     gap: 1rem;
     font-size: 0.9em;
@@ -192,3 +193,41 @@ article a{
     color: white;
     font-size: 1.2rem;
 }
+ /* 加载提示样式 */
+.loading-indicator {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    font-size: 0.9em;
+}
+  
+.no-more {
+    display: none;
+    justify-content: center;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* 响应式隐藏 */
+.hidden-on-mobile { display: block; }
+.hidden-on-desktop { display: none; }
+
+@media (max-width: 768px) {
+    .hidden-on-mobile { display: none; }
+    .hidden-on-desktop { display: block; }
+
+    .loading-dots::after {
+        content: '...';
+        animation: dots 1s infinite;
+    }
+
+    @keyframes dots {
+        0%, 20% { content: ''; }
+        40% { content: '.'; }
+        60% { content: '..'; }
+        80%, 100% { content: '...'; }
+    }
+}
+
+
+  

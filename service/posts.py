@@ -14,6 +14,7 @@ from datetime import datetime, date
 class JSONDict(TypeDecorator):
     """自定义JSON字典类型处理器"""
     impl = Text
+    cache_ok = True
     def process_result_value(self, value, dialect):
         try:
             return json.loads(value) if value else {}

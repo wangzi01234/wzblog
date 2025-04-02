@@ -34,18 +34,33 @@
     {% endfor %}
     </div>
 
-    {# 改进后的分页组件 #}
-    <div class="pagination">
+    {# 分页组件改进：统一处理PC端分页 & 移动端无限滚动 #}
+    <div class="pagination" 
+     data-current-page="{{ pagination.page }}" 
+     data-total-pages="{{ pagination.pages }}"
+     data-total="{{ pagination.total }}">
       {% if pagination.pages > 1 %}
-        <div class="pagination-inner">
+        <div class="pagination-inner hidden-on-mobile">
+          {# 上一页 #}
           {% if pagination.has_prev %}
-            <a href="{{ url_for('/.index', page=pagination.prev_num) }}" 
+            {% set query_args = request.args.to_dict() %}
+            {% if 'page' in query_args %}
+              {% set _ = query_args.pop('page') %}
+            {% endif %}
+            {% set all_args = dict(request.view_args, **query_args) %}
+            <a href="{{ url_for(request.endpoint, page=pagination.prev_num, **all_args) }}"
                class="page-arrow">«</a>
           {% endif %}
     
-          {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=3) %}
+          {# 页码链接 #}
+          {% for page_num in pagination.iter_pages() %}
             {% if page_num %}
-              <a href="{{ url_for('/.index', page=page_num) }}"
+              {% set query_args = request.args.to_dict() %}
+              {% if 'page' in query_args %}
+                {% set _ = query_args.pop('page') %}
+              {% endif %}
+              {% set all_args = dict(request.view_args, **query_args) %}
+              <a href="{{ url_for(request.endpoint, page=page_num, **all_args) }}"
                  class="page-link {% if page_num == pagination.page %}active{% endif %}">
                 {{ page_num }}
               </a>
@@ -54,12 +69,18 @@
             {% endif %}
           {% endfor %}
     
+          {# 下一页 #}
           {% if pagination.has_next %}
-            <a href="{{ url_for('/.index', page=pagination.next_num) }}" 
+            {% set query_args = request.args.to_dict() %}
+            {% if 'page' in query_args %}
+              {% set _ = query_args.pop('page') %}
+            {% endif %}
+            {% set all_args = dict(request.view_args, **query_args) %}
+            <a href="{{ url_for(request.endpoint, page=pagination.next_num, **all_args) }}"
                class="page-arrow">»</a>
           {% endif %}
         </div>
-        
+
         <div class="pagination-stats">
           当前 {{ pagination.page }}/{{ pagination.pages }} 页
           （共 {{ pagination.total }} 篇文章）
@@ -67,9 +88,13 @@
       {% endif %}
     </div>
 
-    {# 移动端加载控件 #}
-    <div class="load-more">
-        <button id="load-more">加载更多</button>
-        <div id="loading" style="display:none;">加载中...</div>
+    {# 移动端加载提示（修改后版本） #}
+    <div class="mobile-pagination hidden-on-desktop">
+      <div class="loading-indicator">
+        <span class="loading-dots">⏳ 加载中</span>
+      </div>
+      <div class="no-more">
+        <span>🎉 已经到底啦~</span>
+      </div>
     </div>
 {% endmacro %}

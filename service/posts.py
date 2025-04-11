@@ -8,7 +8,6 @@ from sqlalchemy import TypeDecorator, Text, desc, func, or_, and_
 from sqlalchemy.exc import SQLAlchemyError
 from flask import current_app
 from sqlalchemy.orm import joinedload
-
 from datetime import datetime, date
 
 class JSONDict(TypeDecorator):
@@ -21,16 +20,15 @@ class JSONDict(TypeDecorator):
         except (TypeError, json.JSONDecodeError):
             return {}
         
-
 def parse_markdown(content):
     """解析带 YAML Front Matter 的 Markdown 文件"""
     parts = content.split('---\r\n', 2)
     if len(parts) == 3:
         metadata = yaml.safe_load(parts[1])
-        body = markdown(parts[2], extensions=['fenced_code', 'codehilite', 'tables'])
+        body = markdown(parts[2], extensions=['fenced_code', 'codehilite', 'tables', 'markdown_gfm_admonition'])
     else:
         metadata = {}
-        body = markdown(content, extensions=['fenced_code', 'codehilite', 'tables'])
+        body = markdown(content, extensions=['fenced_code', 'codehilite', 'tables', 'markdown_gfm_admonition'])
     return metadata, body
 
 def get_content(category, slug):
@@ -42,73 +40,6 @@ def get_content(category, slug):
     except Exception as e:
         return None, None
     return title, result
-
-# def get_info(category=None, tag=None, search=None):
-#     """从数据库获取分类文章的优化方法"""
-#     try:
-#         query = Article.query
-#         # 统一构建基础查询
-#         posts_query = (
-#             query
-#             .outerjoin(ArticleTag, Article.id == ArticleTag.article_id)
-#             .outerjoin(Tag, ArticleTag.tag_id == Tag.id)
-#             .filter(Article.deleted_at.is_(None))
-#         )
-#         if tag:
-#             # 创建子查询：获取包含该标签的文章ID
-#             subquery = (
-#                 ArticleTag.query
-#                 .join(Tag, ArticleTag.tag_id == Tag.id)
-#                 .filter(Tag.slug == tag)
-#                 .with_entities(ArticleTag.article_id)
-#                 .distinct()
-#             )
-#             # 主查询中过滤出这些文章
-#             posts_query = posts_query.filter(Article.id.in_(subquery))
-#         # 动态添加搜索条件
-#         if search:
-#             posts_query = posts_query.filter(
-#                 or_(
-#                     Article.title.ilike(f"%{search}%"),
-#                     Tag.name.ilike(f"%{search}%")
-#                 )
-#             )
-
-#         # 动态添加分类筛选条件
-#         if category:
-#             posts_query = posts_query.filter(Article.category == category)
-            
-#         # 继续构建完整查询
-#         posts_query = posts_query.with_entities(
-#             Article.id,
-#             Article.title,
-#             Article.date,
-#             Article.excerpt,
-#             Article.category,
-#             Article.path,
-#             func.JSON_OBJECTAGG(Tag.name, Tag.slug).cast(JSONDict).label('tags')
-#         ).group_by(Article.id).order_by(desc(Article.date), Article.title.asc())
-
-#         # 转换为结构化数据（避免N+1查询问题）
-#         posts = [
-#             {
-#                 'id': art.id,
-#                 'title': art.title,
-#                 'date': art.date,
-#                 'excerpt': art.excerpt or '',
-#                 'category': art.category if art.category else 'post',
-#                 'slug': art.path.split('/')[-1].split('.md')[0],
-#                 'path': art.path,
-#                 'tags': art.tags or None
-#             }
-#             for art in posts_query.all()
-#         ]
-        # # 双保险排序（处理数据库未正确排序的情况）
-        # return sorted(
-        #     posts,
-        #     key=lambda x: x['date'] or datetime.min,  # 确保datetime已导入
-        #     reverse=True
-        # )
 
 def get_info(page=1, per_page=15, category=None, tags=None, search=None, start_date=None, end_date=None):
     """优化后的分页查询方法"""
@@ -138,6 +69,7 @@ def get_info(page=1, per_page=15, category=None, tags=None, search=None, start_d
             query
             .outerjoin(ArticleTag, Article.id == ArticleTag.article_id)
             .outerjoin(Tag, ArticleTag.tag_id == Tag.id)
+            .filter(ArticleTag.deleted_at.is_(None))
             .filter(Article.deleted_at.is_(None))
             # 添加日期过滤条件
             .filter(and_(
@@ -153,6 +85,7 @@ def get_info(page=1, per_page=15, category=None, tags=None, search=None, start_d
                     ArticleTag.query
                     .join(Tag, ArticleTag.tag_id == Tag.id)
                     .filter(Tag.slug == tag)
+                    .filter(ArticleTag.deleted_at.is_(None))
                     .with_entities(ArticleTag.article_id)
                     .distinct()
                 )

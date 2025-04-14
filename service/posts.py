@@ -25,10 +25,10 @@ def parse_markdown(content):
     parts = content.split('---\r\n', 2)
     if len(parts) == 3:
         metadata = yaml.safe_load(parts[1])
-        body = markdown(parts[2], extensions=['fenced_code', 'codehilite', 'tables', 'markdown_gfm_admonition'])
+        body = markdown(parts[2], extensions=['fenced_code', 'codehilite', 'tables', 'markdown_gfm_admonition','mdx_math'])
     else:
         metadata = {}
-        body = markdown(content, extensions=['fenced_code', 'codehilite', 'tables', 'markdown_gfm_admonition'])
+        body = markdown(content, extensions=['fenced_code', 'codehilite', 'tables', 'markdown_gfm_admonition','mdx_math'])
     return metadata, body
 
 def get_content(category, slug):

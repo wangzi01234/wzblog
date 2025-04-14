@@ -1,1 +1,19 @@
 {% extends "base.html" %}
+    {% block content %}
+    {% include "components/nav.html" %}
+    <div class="media-nav">
+        <button class="active" data-type="book">书籍</button>
+        <button data-type="movie">电影</button>
+        <button data-type="tv">电视剧</button>
+        <button data-type="music">音乐</button>
+        <button data-type="game">游戏</button>
+    </div>
+
+    <div class="status-tabs">
+        <div class="status-tab active" data-status="done">看过</div>
+        <div class="status-tab" data-status="doing">在看</div>
+        <div class="status-tab" data-status="todo">想看</div>
+    </div>
+
+    <div class="grid-container" id="mediaGrid"></div>
+    {% endblock %}

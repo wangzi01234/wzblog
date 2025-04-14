@@ -3,5 +3,6 @@
 {% from "components/info.html" import post_list %}
 
 {% block content %}
+    {% include "components/anav.html" %}
     {{ post_list(posts = posts, pagination = pagination, posts_title = posts_title) }}
 {% endblock %}

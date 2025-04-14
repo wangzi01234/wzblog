@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/filter.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/plan.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/resource.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/book.css') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=EB+Garamond&display=swap" rel="stylesheet">
 </head>
@@ -22,14 +23,22 @@
       planUrl: {{ url_for('/.plan', date='DATE')|tojson }}
     };
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      config: ["MMLorHTML.js"],
+      jax: ["input/TeX", "output/HTML-CSS", "output/NativeMML"],
+      extensions: ["MathMenu.js", "MathZoom.js"]
+    });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/nav.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/calendar.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/book.js') }}" defer></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
 <body>
     {% include 'components/header.html' %}
-    {% include 'components/nav.html' %}
     <main>
         {% block content %}{% endblock %}
     </main>
